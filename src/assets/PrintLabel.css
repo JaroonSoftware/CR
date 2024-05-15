@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.page-box {
+    width: 105mm; /* A6 */
+    min-height: 148mm; /* A6 */
+    margin: auto;
+    padding: 25px;
+    border: 1px solid #eee;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+    line-height: 24px;
+    /* font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; */
+    font-family: 'Kanit', sans-serif;
+    color: #555;
+    
+  }
+  
+  .page-box table {
+    width: 100%;
+    line-height: inherit;
+    text-align: left;
+  }
+  
+  .page-box table td {
+    padding: 5px;
+    vertical-align: top;
+  }
+  
+  .page-box table tr.top table td.title {
+    font-size: 45px;
+    line-height: 45px;
+    color: #333;
+  }
+
+  .Hremark{
+    border-bottom: 1px solid #eee;
+  }
+  .Tableremark{ 
+    padding-top: 50px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .page-box table tr.top table td {
+      width: 100%;
+      display: block;
+      text-align: center;
+      size: landscape;
+    }
+  
+    .page-box table tr.information table td {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+  }
+  
+  /** RTL **/
+  .rtl {
+    direction: rtl;
+    /* font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
+      sans-serif; */
+  }
+  
+  .rtl table {
+    text-align: right;
+  }
+  
+  .rtl table tr td:nth-child(2) {
+    text-align: left;
+  }
+  

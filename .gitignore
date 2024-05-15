@@ -1,0 +1,34 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+old
+README.md
+# testing
+/coverage
+README.md
+# production
+/build
+README.md
+/api/conn.php
+api/conn.php
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+README.md
+/api/product/uploads/*
+/api/conn.php
+api/conn.php
+/uploads
+/upload_logo
+/upload_slip
+src/pages/TestReport.js
+src/pages/PrintContent.js
+src/assets/Test.css

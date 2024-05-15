@@ -1,0 +1,6 @@
+.hidden-column {
+    display: none;
+  }
+  .custom-button .anticon {
+    margin-left: 5px; /* ระยะห่างด้านขวาของไอคอน */
+  }
