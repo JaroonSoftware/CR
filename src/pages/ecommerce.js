@@ -411,14 +411,14 @@ const Login = () => {
      {ShowCategory && (
         <Content
           style={{
-            marginLeft: 15,
-            minHeight: 280,
+            marginLeft: 30,
+            minHeight: 200,
           }}
         >
           <div mode="horizontal">
             <Row gutter={[24, 0]}>
               {AllCategoryEcommerce.map((list) => (
-                <Col xs={12} sm={12} md={12} lg={6} xl={4} className="content-top-content" >
+                <Col xs={22} sm={12} md={12} lg={6} xl={6} className="content-top-content" >
                   <Card
                     onClick={(e) => ProductEcommerce(list.ctgy_id)}
                     hoverable
@@ -434,7 +434,8 @@ const Login = () => {
                         <div  key={list.img_uid}>
                           <Avatar 
                             //preview={false}
-                            size={245}
+                            style={{alignContent: 'center'}}
+                            size={250}
                             src={list.img_filename}
                             alt={`Image ${list.img_name}`}
                           />
