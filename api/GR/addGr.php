@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once(dirname(__FILE__, 2) . "/onload.php");
 $action_by = $token->userid;
 
@@ -39,10 +40,11 @@ if ($stmt->execute()) {
             $stmt_status->execute();
             $row_sts = $stmt_status->fetch(PDO::FETCH_ASSOC);
             if($row_sts["amount"] != $row_sts["recamount"]+$amount){
-                $sts = "รับยังไม่ครบ";
+                $sts = 'รับยังไม่ครบ';
             }else{
-                $sts = "รับครบแล้ว";
+                $sts = 'รับครบแล้ว';
             }
+
             //End
 
             //Check stock 
@@ -77,10 +79,9 @@ if ($stmt->execute()) {
             //End
 
             //Insert GR Detail
-            $strSqlInsertGRDetail = "INSERT INTO gr_detail ( `gr_code`, `gr_no`, `prod_code`, `size_id`, `amount`, `status`, `discount`,  `id_po_detail` ) ";
-            $strSqlInsertGRDetail .= " VALUES ('" . $grcode . "','" . $no . "','" . $prod_code . "','" . $size_id . "','" . $amount . "','" . $sts . "','".  $discount . "','". $podetail_id . "'";
+            $strSqlInsertGRDetail = "INSERT INTO gr_detail ( `gr_code`, `gr_no`, `prod_code`, `size_id`, `amount`, `discount`,  `id_po_detail` ) ";
+            $strSqlInsertGRDetail .= " VALUES ('" . $grcode . "','" . $no . "','" . $prod_code . "','" . $size_id . "','" . $amount . "','".  $discount . "','". $podetail_id . "'";
             $strSqlInsertGRDetail .= ")";
-            //echo $strSqlDetail;
             $stmt_InsertGRDetail = $conn->prepare($strSqlInsertGRDetail);
             if($stmt_InsertGRDetail->execute()){
                 $st =1;
@@ -121,3 +122,7 @@ if ($stmt->execute()) {
 } else {
     echo json_encode(array('status' => '0', 'message' => 'Error insert Gr!'));
 }
+
+ob_end_flush();
+exit;
+?>

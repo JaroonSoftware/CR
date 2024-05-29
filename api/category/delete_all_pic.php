@@ -1,6 +1,6 @@
 <?php
 
-header('Content-Type: application/json');
+
 
 // Read the raw input data
 

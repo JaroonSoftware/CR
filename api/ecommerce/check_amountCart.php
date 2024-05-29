@@ -21,7 +21,7 @@ include '../conn.php';
     if ($stmt->rowCount() > 0) {
         if($amount <= $data['amount']){ $status= "0"; }else{ $status= "1"; }
     }
-	header('Content-Type: application/json');
+	
 
 	$apiResponse = array(
 		"status" => $status,

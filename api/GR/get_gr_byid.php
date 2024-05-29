@@ -23,7 +23,7 @@
 		$dataDetail[] = $row2;
 	}
 
-	header('Content-Type: application/json');
+	
 
 	$apiResponse = array(
 		"status" => "1",

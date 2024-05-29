@@ -1,5 +1,5 @@
 <?php
-ob_clean();
+//ob_clean();
 error_reporting(E_ALL);
 ini_set('display_errors', 1); 
 date_default_timezone_set('Asia/Bangkok');   

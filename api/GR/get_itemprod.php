@@ -20,7 +20,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
 	$dataSize[] = $row2;
 }
 
-header('Content-Type: application/json');
+
 
 $apiResponse = array(
 	"status" => "1",

@@ -29,14 +29,9 @@ const Gr = () => {
   const [formRead] = Form.useForm();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [itemsOptionSupplier, setItemsOptionSupplier] = useState([]);
   const { Option } = Select;
-  const { TextArea } = Input;
   const [itemsOptionPO, setItemsOptionPO] = useState([]);
   const [dataSource, setDataSource] = useState([]);
-  const [ItemProduct, setItemProduct] = useState('');
-  const [textAreaValue, setTextAreaValue] = useState('');
-  const [textAreaEditValue, setTextAreaEditValue] = useState('');
   const [dataSourceRead, setDataSourceRead] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);  
 
@@ -299,7 +294,7 @@ const Gr = () => {
             price: data.price,
             discount: data.discount,
             status : data.statusItem,
-          }));
+          })).filter(item => item.amount_total !== 0);
           setDataSource(PoDetail);
 
         }
@@ -327,7 +322,7 @@ const Gr = () => {
           Swal.fire({
             title: "<strong>จำนวนสินค้าที่รับได้เกินกำหนด!</strong>",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2000,
             icon: "warning",
           });
           newData[index]['amount'] = 0;
@@ -612,7 +607,10 @@ const Gr = () => {
           </Col>
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
             เลขที่ใบ PO
-            <Form.Item name="po_code" >
+            <Form.Item 
+              name="po_code" 
+              rules={[{ required: true, message: 'เลือกใบ PO!' }]}
+            >
               <Select
                 showSearch
                 style={{ height: 40 }}
@@ -649,7 +647,7 @@ const Gr = () => {
             วันที่รับสินค้า
             <Form.Item
               name="gr_date"
-              rules={[{ required: true, message: 'Please select a date!' }]}
+              rules={[{ required: true, message: 'เลือกวันที่รับสินค้า!' }]}
               style={{ width: '100%' }}
             >
             <DatePicker style={{ width: '100%' , height: 40}}/>
@@ -659,6 +657,7 @@ const Gr = () => {
             การชำระเงิน
             <Form.Item
               name="payment"
+              rules={[{ required: true, message: 'เลือกการชำระเงิน!' }]}
             >
             <Select placeholder="เลือก การชำระเงิน" style={{ height: 40 }}>
               <Option value="เงินสด">เงินสด</Option>

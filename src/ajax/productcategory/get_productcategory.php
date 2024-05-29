@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include('../conn.php');
-	// header('Content-Type: application/json');
+	// 
 	header('Access-Control-Allow-Origin: *');
 	header('Access-Control-Allow-Headers: *');	
 	// $rest_json = file_get_contents("php://input");

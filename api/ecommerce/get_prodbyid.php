@@ -52,7 +52,6 @@ include '../conn.php';
         
         $dataArray[] = $nestedObject; 
 	}
-	header('Content-Type: application/json');
 
 	$apiResponse = array(
 		"status" => "1",
