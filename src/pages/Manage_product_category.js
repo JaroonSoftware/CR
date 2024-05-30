@@ -292,13 +292,13 @@ const Manage_product_category = () => {
         dataIndex: "id",
         key: "id",
         hidden: "true",
-        width: "40%",
+        width: "1%",
     },
     {
       title: "หมวดหมู่หลัก",
       dataIndex: "ctgy_name",
       key: "ctgy_name",
-      width: "25%",
+      width: "30%",
       ...getColumnSearchProps("ctgy_name"),
       sorter: (a, b) => a.ctgy_name.length - b.ctgy_name.length,
       sortDirections: ["descend", "ascend"],
@@ -307,7 +307,7 @@ const Manage_product_category = () => {
         title: "หมวดหมู่ย่อย",
         dataIndex: "subctgy_name",
         key: "subctgy_name",
-        width: "25%",
+        width: "30%",
         ...getColumnSearchProps("subctgy_name"),
         sorter: (a, b) => a.subctgy_name.length - b.subctgy_name.length,
         sortDirections: ["descend", "ascend"],
@@ -324,7 +324,7 @@ const Manage_product_category = () => {
       {
         title: "Action",
         key: "operation",
-        width: "25%",
+        width: "15%",
         fixed: "right",
         render: (text) => (
             <Button
@@ -496,10 +496,10 @@ const Manage_product_category = () => {
           </Row>
         </Form>
         </Modal>
-        <Row gutter={[24, 0]}>
+        <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllProductCategory} rowKey="id" />
+              <Table size="small" columns={columns} dataSource={AllProductCategory} rowKey="id" />
             </Card>
           </Col>
         </Row>

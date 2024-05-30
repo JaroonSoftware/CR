@@ -517,7 +517,7 @@ const SubCategory = () => {
             </Col> 
             </Row>
             <br></br>
-            <Table columns={columns} dataSource={AllSubCategory} />
+            <Table size="small" columns={columns} dataSource={AllSubCategory} />
           </Card> 
           <Row gutter={[8, 8]}>
             <Col span={12}> 

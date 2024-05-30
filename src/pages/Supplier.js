@@ -154,7 +154,7 @@ function Supplier() {
       title: "รหัสผู้ขาย",
       dataIndex: "supcode",
       key: "supcode",
-      width: "30%",
+      width: "15%",
       ...getColumnSearchProps("supcode"),
       sorter: (a, b) => a.supcode.length - b.supcode.length,
       sortDirections: ["descend", "ascend"],
@@ -163,7 +163,7 @@ function Supplier() {
       title: "ชื่อผู้ขาย",
       dataIndex: "supname",
       key: "supname",
-      width: "30%",
+      width: "25%",
       ...getColumnSearchProps("supname"),
       sorter: (a, b) => a.supname.length - b.supname.length,
       sortDirections: ["descend", "ascend"],
@@ -172,7 +172,7 @@ function Supplier() {
       title: "จังหวัด",
       dataIndex: "district",
       key: "district",
-      width: "30%",
+      width: "20%",
       ...getColumnSearchProps("district"),
       sorter: (a, b) => a.district.length - b.district.length,
       sortDirections: ["descend", "ascend"],
@@ -654,7 +654,7 @@ function Supplier() {
                   size="small"
                 columns={columns}
                 dataSource={AllSupplier}
-                rowKey="unitcode"
+                rowKey="supcode"
               />
             </Card>
           </Col>

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { SearchOutlined, ToolTwoTone } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
@@ -14,7 +13,7 @@ import {
   Form,
   Select,
   Badge
-} from "antd";
+} from "antd"; 
 import Swal from "sweetalert2";
 import optionService from "../service/Options.service"
 import ProductSizeService from "../service/ProductSizeService";
@@ -270,7 +269,7 @@ const Manage_product_size = () => {
         dataIndex: "id",
         key: "id",
         hidden: "true",
-        width: "40%",
+        width: "30%",
     },
     {
       title: "ขนาด",
@@ -293,7 +292,7 @@ const Manage_product_size = () => {
       {
         title: "Action",
         key: "operation",
-        width: "25%",
+        width: "5%",
         fixed: "right",
         render: (text) => (
             <Button
@@ -319,8 +318,6 @@ const Manage_product_size = () => {
         >
           เพิ่ม ขนาดของสินค้า
         </Button>
-        <br></br>
-        <br></br>
         {/* <ModalAdd
           open={OpenModalAdd}
           onCancel={() => {
@@ -381,10 +378,10 @@ const Manage_product_size = () => {
           </Row>
         </Form>
         </Modal>
-        <Row gutter={[24, 0]}>
+        <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllProductSize} rowKey="id" />
+              <Table size="small" columns={columns} dataSource={AllProductSize} rowKey="id" />
             </Card>
           </Col>
         </Row>

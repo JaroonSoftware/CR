@@ -152,13 +152,13 @@ function Size() {
       dataIndex: "size_id",
       key: "size_id",
       hidden: "true",
-      width: "30%",
+      width: "1%",
     },
     {
       title: "ชื่อขนาด",
       dataIndex: "size_name",
       key: "size_name",
-      width: "25%",
+      width: "55%",
       ...getColumnSearchProps("size_name"),
       sorter: (a, b) => a.size_name.length - b.size_name.length,
       sortDirections: ["descend", "ascend"],
@@ -167,7 +167,7 @@ function Size() {
       title: "สถานะการใช้งาน",
       dataIndex: "status",
       key: "status",
-      width: "20%",
+      width: "30%",
       ...getColumnSearchProps("statussize"),
       sorter: (a, b) => a.status.length - b.status.length,
       sortDirections: ["descend", "ascend"],
@@ -184,7 +184,7 @@ function Size() {
     {
       title: "Action",
       key: "operation",
-      width: "5%",
+      width: "15%",
       fixed: "right",
       render: (text) => (
         <Button

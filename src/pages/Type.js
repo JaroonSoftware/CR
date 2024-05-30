@@ -153,13 +153,13 @@ const Type = () => {
         dataIndex: "prodty_id",
         key: "prodty_id",
         hidden: "true",
-        width: "40%",
+        width: "1%",
     },
     {
       title: "ประเภทสินค้า",
       dataIndex: "prodty_name",
       key: "prodty_name",
-      width: "40%",
+      width: "60%",
       ...getColumnSearchProps("prodty_name"),
       sorter: (a, b) => a.unit.length - b.unit.length,
       sortDirections: ["descend", "ascend"],
@@ -168,7 +168,7 @@ const Type = () => {
       title: "สถานะการใช้งาน",
       dataIndex: "status",
       key: "status",
-      width: "20%",
+      width: "25%",
       ...getColumnSearchProps("status"),
       sorter: (a, b) => a.statutype.length - b.statutype.length,
       sortDirections: ["descend", "ascend"],
@@ -185,7 +185,7 @@ const Type = () => {
     {
         title: "Action",
         key: "operation",
-        width: "40%",
+        width: "15%",
         fixed: "right",
         render: (text) => (
             <Button
@@ -450,10 +450,10 @@ const Type = () => {
             setOpenModalEdit(false);
           }}
         />
-        <Row gutter={[24, 0]}>
+        <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllProductType} />
+              <Table size="small" columns={columns} dataSource={AllProductType}  rowKey="prodty_id"/>
             </Card>
           </Col>
         </Row>

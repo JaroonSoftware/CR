@@ -99,7 +99,7 @@ const PublicHeader = () => {
     //   if(!isAuthen) setLogined( true );
     //   else direcetSystem();
     // }
-    const curLocation = authService.getCurrent();
+     let curLocation = authService.getCurrent();
 
     setCurr(curLocation);
     // isLogin();

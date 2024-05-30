@@ -19,7 +19,6 @@ import {
   InputNumber,Badge,
 } from "antd";
 import Swal from "sweetalert2";
-import optionService from "../../service/Options.service"
 import POService from "../../service/POService";
 import './Po.css';
 import dayjs from 'dayjs';
@@ -36,7 +35,6 @@ const PO = () => {
   const { Option } = Select;
   const { TextArea } = Input;
   const [itemsOptionProduct, setItemsOptionProduct] = useState([]);
-  const [itemsOptionSize, setItemsOptionSize] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [ItemProduct, setItemProduct] = useState('');
   const [textAreaValue, setTextAreaValue] = useState('');
@@ -58,7 +56,7 @@ const PO = () => {
     } 
     async function getItemOptionSupplier(){
       const {data, status} =  await POService.getOptionPO({Option:"Supplier"}) 
-      
+       
       if(status === 200) setItemsOptionSupplier(data.data); 
     } 
     getItemOptionProduct();
@@ -1168,7 +1166,7 @@ const PO = () => {
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllPO} rowKey="id" />
+              <Table columns={columns} dataSource={AllPO} rowKey="po_code" />
             </Card>
           </Col>
         </Row>

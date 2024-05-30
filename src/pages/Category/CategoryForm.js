@@ -382,13 +382,13 @@ const Category = () => {
         dataIndex: "ctgy_id",
         key: "ctgy_id",
         hidden: "true",
-        width: "40%",
+        width: "1%",
     },
     {
       title: "ชื่อหมวดหมู่",
       dataIndex: "ctgy_name",
       key: "ctgy_name",
-      width: "40%",
+      width: "60%",
       ...getColumnSearchProps("ctgy_name"),
       sorter: (a, b) => a.unit.length - b.unit.length,
       sortDirections: ["descend", "ascend"],
@@ -405,7 +405,7 @@ const Category = () => {
       title: "สถานะการใช้งาน",
       dataIndex: "status",
       key: "status",
-      width: "20%",
+      width: "25%",
       ...getColumnSearchProps("status"),
       sorter: (a, b) => a.statutype.length - b.statutype.length,
       sortDirections: ["descend", "ascend"],
@@ -422,7 +422,7 @@ const Category = () => {
     {
         title: "Action",
         key: "operation",
-        width: "40%",
+        width: "15%",
         fixed: "right",
         render: (text) => (
             <Button
@@ -702,10 +702,10 @@ const Category = () => {
           src={previewImage}
         />
       </Modal>
-        <Row gutter={[24, 0]}>
+        <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllCategory} rowKey="ctgy_name" />
+              <Table size="small" columns={columns} dataSource={AllCategory} rowKey="ctgy_name" />
             </Card>
           </Col>
         </Row>

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SearchOutlined, ToolTwoTone,DeleteFilled  } from "@ant-design/icons";
+import { SearchOutlined,DeleteFilled  } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -19,7 +19,6 @@ import {
 } from "antd";
 import Swal from "sweetalert2";
 import GRService from "../service/GRService";
-import dayjs from 'dayjs';
 
 const Gr = () => {
   const [AllGR, setAllGR] = useState("");
@@ -786,10 +785,10 @@ const Gr = () => {
         </Modal>
         {/* End PopUp Read GR */}
 
-        <Row gutter={[24, 0]}>
+        <Row gutter={[24, 0]} style={{ marginTop: "1rem" }} >
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllGR} rowKey="id" />
+              <Table size="small" columns={columns} dataSource={AllGR} rowKey="gr_code" />
             </Card>
           </Col>
         </Row>

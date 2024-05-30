@@ -1022,7 +1022,7 @@ const ShopOrder = () => {
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
-              <Table columns={columns} dataSource={AllShopOrder} rowKey="id" />
+              <Table columns={columns} dataSource={AllShopOrder} rowKey="so_no" />
             </Card>
           </Col>
         </Row>

@@ -416,13 +416,13 @@ const Product = () => {
         dataIndex: "prod_id",
         key: "prod_id",
         hidden: "true",
-        width: "40%",
+        width: "1%",
     },
     {
         title: "รหัสสินค้า",
         dataIndex: "prod_code",
         key: "prod_code",
-        width: "15%",
+        width: "10%",
         ...getColumnSearchProps("prod_code"),
         sorter: (a, b) => a.unit.length - b.unit.length,
         sortDirections: ["descend", "ascend"],
@@ -440,7 +440,7 @@ const Product = () => {
       title: "ประเภทสินค้า",
       dataIndex: "prod_type",
       key: "prod_type",
-      width: "15%",
+      width: "10%",
       ...getColumnSearchProps("prod_type"),
       sorter: (a, b) => a.unit.length - b.unit.length,
       sortDirections: ["descend", "ascend"],
@@ -946,7 +946,7 @@ const Product = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <Row gutter={[24, 0]}>
+      <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
             <Card bordered={false} className="criclebox cardbody h-full">
               <Table  size="small" columns={columns} dataSource={AllProduct} rowKey="prod_code" />
