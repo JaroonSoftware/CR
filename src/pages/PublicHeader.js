@@ -88,7 +88,7 @@ const PublicHeader = () => {
       .catch((err) => {});
   };
   const direcetSystem = () => {
-    navigate(!!curr ? curr : "/dashboard", { replace: true });
+    navigate(!!curr ? curr : "/product", { replace: true });
   };
   
   useEffect(() => {
