@@ -70,7 +70,7 @@ const Login = () => {
         ? <div className="layout-default ant-layout layout-sign-up">
           <Header>
             <div className="header-col header-brand">
-              <h5>Nine Star Food</h5>
+              {/* <h5>Nine Star Food</h5> */}
             </div>
           </Header>
 

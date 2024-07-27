@@ -175,7 +175,7 @@ const PublicHeader = () => {
       >
         <Modal
           onOk={handleloginOk}
-          //onCancel={handleloginCancel} //fix สำหรับเทสหลังบ้าน
+          onCancel={handleloginCancel} //fix สำหรับเทสหลังบ้าน
           closable={false} //fix สำหรับเทสหลังบ้าน
           cancelButtonProps={{ style: { display: "none" } }} 
           okButtonProps={{ style: { display: "none" } }}
