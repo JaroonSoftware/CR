@@ -227,7 +227,7 @@ const PO = () => {
             size_id: data.size_name,
             price: data.price,
             discount: data.discount,
-            total: data.amount*data.price,
+            total: (data.amount*data.price) - (data.amount*data.price*data.discount/100),
             status_item : (data.statusItem !== 'รอรับ' || action === "cancel" ? true : false),
           }));
           setDataSourceEdit(PoDetail);
