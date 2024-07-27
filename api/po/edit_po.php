@@ -17,17 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     $price = $object['price'];
                     $discount = $object['discount'];
                     $status = $object['status_item'];
-
-                    if(!$status){ //ถ้าเป็น true คือรับครบแล้ว
-                        $strSqlDetail = "UPDATE po_detail SET ";
-                        $strSqlDetail .= " amount='".$amount."',price='".$price."',discount='".$discount."' ";
-                        $strSqlDetail .= "WHERE id = '".$id."' ";
+                    if($status !== true){ //ถ้าเป็น true คือรับครบแล้ว
+                        $strSqlDetail = "UPDATE po_detail SET amount='".$amount."',price='".$price."',discount='".$discount."' WHERE id = '".$id."' ";
                         //echo $strSqlDetail;
                         $stmt_Detail = $conn->prepare($strSqlDetail);
                         if($stmt_Detail->execute()){
-                            $st =1;
+                            $st = 1;
                         }else{
-                            $st =0;
+                            $st = 0;
                             return;
                         }
                     }

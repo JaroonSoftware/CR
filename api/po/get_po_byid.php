@@ -13,7 +13,7 @@
 		$dataArray[] = $row;
 	}
 
-	$sql2 = "SELECT *,pd.status as statusItem FROM `po_detail` pd LEFT JOIN product p on pd.prod_code = p.prod_code LEFT JOIN size s on pd.size_id = s.size_id LEFT JOIN unit u on pd.unit_id = u.unitcode ";
+	$sql2 = "SELECT p.prod_id,p.prod_code,p.prod_name,p.prodty_id,p.unit,pd.id,pd.po_code,pd.no,pd.size_id,pd.amount,pd.price,pd.unit_id,pd.discount,pd.recamount,pd.status as statusItem FROM `po_detail` pd LEFT JOIN product p on pd.prod_code = p.prod_code LEFT JOIN size s on pd.size_id = s.size_id LEFT JOIN unit u on pd.unit_id = u.unitcode ";
 	$sql2 .= " where po_code = '".$_GET['id']."'";
 	$stmt2 = $conn->prepare($sql2);
 	$stmt2->execute();
