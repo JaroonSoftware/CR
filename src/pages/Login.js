@@ -33,7 +33,7 @@ const Login = () => {
     Connectapp(values);
   };
   const direcetSystem = () => { 
-    navigate(!!curr ? curr : "/dashboard", { replace: true });
+    navigate(!!curr ? curr : "/Product", { replace: true });
   }
 
   const Connectapp = (values) => {
