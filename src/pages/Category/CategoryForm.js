@@ -390,8 +390,6 @@ const Category = () => {
       key: "ctgy_name",
       width: "60%",
       ...getColumnSearchProps("ctgy_name"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
       render: (text, record) => (
         <span
           style={{ color: "#29f", cursor: "pointer" }}
@@ -407,8 +405,6 @@ const Category = () => {
       key: "status",
       width: "25%",
       ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.statutype.length - b.statutype.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => (
         <div>
           {data === "Y" ? (
@@ -426,9 +422,10 @@ const Category = () => {
         fixed: "right",
         render: (text) => (
             <Button
-              icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+              icon={<ToolTwoTone />}
               style={{ cursor: "pointer" }}
-              danger
+              type="primary"
+              ghost
               onClick={(e) => showEditModal(text.ctgy_id)}
             >
               แก้ใข

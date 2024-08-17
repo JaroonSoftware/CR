@@ -161,8 +161,6 @@ const Type = () => {
       key: "prodty_name",
       width: "60%",
       ...getColumnSearchProps("prodty_name"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "สถานะการใช้งาน",
@@ -170,8 +168,6 @@ const Type = () => {
       key: "status",
       width: "25%",
       ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.statutype.length - b.statutype.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => (
         <div>
           {data === "Y" ? (
@@ -189,9 +185,10 @@ const Type = () => {
         fixed: "right",
         render: (text) => (
             <Button
-            icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+            icon={<ToolTwoTone/>}
             style={{ cursor: "pointer" }}
-            danger
+            type="primary"
+            ghost
             onClick={(e) => showEditModal(text.prodty_id)}
           >
             แก้ใข

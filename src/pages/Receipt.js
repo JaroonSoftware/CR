@@ -294,7 +294,7 @@ const Receipt = () => {
       key: "rcpt_no",
       width: "25%",
       ...getColumnSearchProps("rcpt_no"),
-      sorter: (a, b) => a.rcpt_no.length - b.rcpt_no.length,
+      sorter: (a, b) => a.rcpt_no.localeCompare(b.rcpt_no),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -303,7 +303,7 @@ const Receipt = () => {
         key: "so_no",
         width: "25%",
         ...getColumnSearchProps("so_no"),
-        sorter: (a, b) => a.so_no.length - b.so_no.length,
+        sorter: (a, b) => a.so_no.localeCompare(b.so_no),
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -312,7 +312,11 @@ const Receipt = () => {
         key: "amounts",
         width: "25%",
         ...getColumnSearchProps("amounts"),
-        sorter: (a, b) => a.amounts.length - b.amounts.length,
+        sorter: (a, b) => {
+          const intA = parseInt(a.amounts.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10); 
+          const intB = parseInt(b.amounts.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10);
+          return intA - intB;
+        },
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -320,8 +324,6 @@ const Receipt = () => {
         dataIndex: "status",
         key: "status",
         ...getColumnSearchProps("status"),
-        sorter: (a, b) => a.status.length - b.status.length,
-        sortDirections: ["descend", "ascend"],
         render: (data) => {
           if(data === "1"){ return <Badge status="success" text="ชำระเงินสำเร็จ" />}
           if(data === "ยกเลิก"){ return <Badge color="red" text="ยกเลิก" />} 

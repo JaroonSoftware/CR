@@ -499,7 +499,7 @@ const Gr = () => {
       width: "15%",
       
       ...getColumnSearchProps("gr_code"),
-      sorter: (a, b) => a.gr_code.length - b.gr_code.length,
+      sorter: (a, b) => a.gr_code.localeCompare(b.gr_code),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -508,7 +508,11 @@ const Gr = () => {
         key: "gr_date",
         width: "15%",
         ...getColumnSearchProps("gr_date"),
-        sorter: (a, b) => a.gr_date.length - b.gr_date.length,
+        sorter: (a, b) => {
+          const dateA = new Date(a.gr_date.split('-').reverse().join('-')); // แปลงจาก "DD-MM-YYYY" เป็น "YYYY-MM-DD"
+          const dateB = new Date(b.gr_date.split('-').reverse().join('-'));
+          return dateA - dateB; // เปรียบเทียบ Date object
+        },
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -517,7 +521,7 @@ const Gr = () => {
         key: "po_code",
         width: "15%",
         ...getColumnSearchProps("po_code"),
-        sorter: (a, b) => a.po_code.length - b.po_code.length,
+        sorter: (a, b) => a.po_code.localeCompare(b.po_code),
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -526,8 +530,6 @@ const Gr = () => {
         key: "supname",
         width: "25%",
         ...getColumnSearchProps("supname"),
-        sorter: (a, b) => a.supname.length - b.supname.length,
-        sortDirections: ["descend", "ascend"],
       },
       // {
       //   title: "สถานะ",

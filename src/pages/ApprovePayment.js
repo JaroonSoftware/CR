@@ -178,23 +178,19 @@ function ApprovePayment() {
       dataIndex: "contact_name",
       key: "contact_name",
       ...getColumnSearchProps("contact_name"),
-      sorter: (a, b) => a.contact_name.length - b.contact_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "เบอร์โทรศัพท์ ",
         dataIndex: "tel",
         key: "tel",
         ...getColumnSearchProps("tel"),
-        sorter: (a, b) => a.tel.length - b.tel.length,
-        sortDirections: ["descend", "ascend"],
     },
     {
         title: "เลขใบสั่งซื้อ ",
         dataIndex: "so_no",
         key: "so_no",
         ...getColumnSearchProps("so_no"),
-        sorter: (a, b) => a.so_no.length - b.so_no.length,
+        sorter: (a, b) => a.so_no.localeCompare(b.so_no),
         sortDirections: ["descend", "ascend"],
     },
     {
@@ -202,7 +198,11 @@ function ApprovePayment() {
         dataIndex: "price",
         key: "price",
         ...getColumnSearchProps("price"),
-        sorter: (a, b) => a.price.length - b.price.length,
+        sorter: (a, b) => {
+          const intA = parseInt(a.price.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10); 
+          const intB = parseInt(b.price.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10);
+          return intA - intB;
+        },
         sortDirections: ["descend", "ascend"],
     },
     {
@@ -210,7 +210,19 @@ function ApprovePayment() {
         dataIndex: "date_time",
         key: "date_time",
         ...getColumnSearchProps("date_time"),
-        sorter: (a, b) => a.date_time.length - b.date_time.length,
+        sorter: (a, b) => {
+          const [datePartA, timePartA] = a.date_time.split(' ');
+          const [dayA, monthA, yearA] = datePartA.split('-');
+          const formattedDateStringA = `${yearA}${monthA}${dayA}${timePartA.replace(/:/g, '')}`;
+          const dateA = parseInt(formattedDateStringA, 10);
+      
+          const [datePartB, timePartB] = b.date_time.split(' ');
+          const [dayB, monthB, yearB] = datePartB.split('-');
+          const formattedDateStringB = `${yearB}${monthB}${dayB}${timePartB.replace(/:/g, '')}`;
+          const dateB = parseInt(formattedDateStringB, 10);
+
+          return dateA - dateB;
+        },
         sortDirections: ["descend", "ascend"],
     },
     {
@@ -218,8 +230,6 @@ function ApprovePayment() {
       dataIndex: "status",
       key: "status",
       ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.status.length - b.status.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => {
         if(data === "อนุมัติการชำระเงิน"){ return <Badge status="success" text="อนุมัติการชำระเงิน" />}
         if(data === "รอตรวจสอบ"){ return <Badge color="yellow" text="รอตรวจสอบ" />}  

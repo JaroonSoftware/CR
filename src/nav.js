@@ -65,17 +65,17 @@ let _nav = [
   },
   {
     title: "สินค้า",
-    icon: <FileDoneOutlined className="nav-ico" />,
+    icon: <InboxOutlined className="nav-ico" />,
     to: "/product",
   },
   {
     title: "ผู้ขาย",
-    icon: <FileDoneOutlined className="nav-ico" />,
+    icon: <InboxOutlined className="nav-ico" />,
     to: "/supplier",
   },
   {
     title: "หน่วย",
-    icon: <HddOutlined className="nav-ico" />,
+    icon: <InboxOutlined className="nav-ico" />,
     to: "/unit",
   },
   {
@@ -85,7 +85,7 @@ let _nav = [
   },
   {
     title: "หมวดหมู่",
-    icon: <HddOutlined className="nav-ico" />,
+    icon: <InboxOutlined className="nav-ico" />,
     to: "/category",
   },
   {

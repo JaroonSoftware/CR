@@ -2,7 +2,7 @@
 ob_start();
 	include_once(dirname(__FILE__, 2)."/onload.php");
 
-	$sql  = "SELECT  `id`,`so_no`, `contact_name`, `tel`, `price`, CONCAT(DATE_FORMAT(date, '%d/%m/%Y'),' ',time) as date_time , `status` FROM `payment` "; 
+	$sql  = "SELECT  `id`,`so_no`, `contact_name`, `tel`, FORMAT(price, 0) as price, CONCAT(DATE_FORMAT(date, '%d-%m-%Y'),' ',time) as date_time , `status` FROM `payment` "; 
 
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();

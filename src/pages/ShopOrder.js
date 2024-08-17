@@ -633,7 +633,7 @@ const ShopOrder = () => {
       width: "20%",
       
       ...getColumnSearchProps("so_no"),
-      sorter: (a, b) => a.so_no.length - b.so_no.length,
+      sorter: (a, b) => a.so_no.localeCompare(b.so_no),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -642,7 +642,11 @@ const ShopOrder = () => {
         key: "so_date",
         width: "20%",
         ...getColumnSearchProps("so_date"),
-        sorter: (a, b) => a.so_date.length - b.so_date.length,
+        sorter: (a, b) => {
+          const dateA = new Date(a.so_date.split('-').reverse().join('-')); // แปลงจาก "DD-MM-YYYY" เป็น "YYYY-MM-DD"
+          const dateB = new Date(b.so_date.split('-').reverse().join('-'));
+          return dateA - dateB; // เปรียบเทียบ Date object
+        },
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -651,8 +655,6 @@ const ShopOrder = () => {
         key: "cus_name",
         width: "20%",
         ...getColumnSearchProps("cus_name"),
-        sorter: (a, b) => a.cus_name.length - b.cus_name.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
         title: "สถานะ",

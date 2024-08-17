@@ -5,8 +5,6 @@ ini_set('display_errors', 1);
 // header('Access-Control-Allow-Origin: *');
 // header('Access-Control-Allow-Headers: *'); 
 date_default_timezone_set('Asia/Bangkok');
-session_start();
-// include('../../conn.php');
 include('../conn.php');
 include('../src/JWT.php');
 
@@ -37,13 +35,6 @@ if ($stmt->execute()) {
 			if ($status == 'Y') {
 				// session_regenerate_id();
 				$sKey = base64_encode(vsprintf('C%s%s-%s', str_split(bin2hex(random_bytes(16)), 4)));
-				$_SESSION['loggedin'] = TRUE;
-				$_SESSION['name'] = $_POST['username'];
-				$_SESSION['id'] = $code;
-				$_SESSION['firstname'] = $firstname;
-				$_SESSION['lastname'] = $lastname;
-				$_SESSION['type'] = $type;
-				$_SESSION['skey'] = "{$sKey}Jaroon";
 				$secretKey = "Q2ZjYzAyYmNiLTQwMjM=Jaroon"; // ?? 'bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=';   
 				$issuedAt = new DateTimeImmutable(); 
 				

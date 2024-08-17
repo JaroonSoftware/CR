@@ -1,4 +1,4 @@
-import { SearchOutlined, ToolTwoTone } from "@ant-design/icons";
+import { SearchOutlined, DeleteOutlined  } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -277,8 +277,6 @@ const Manage_product_size = () => {
       key: "size_name",
       width: "25%",
       ...getColumnSearchProps("size_name"),
-      sorter: (a, b) => a.size_name.length - b.size_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "สินค้า",
@@ -286,8 +284,6 @@ const Manage_product_size = () => {
         key: "prod_name",
         width: "25%",
         ...getColumnSearchProps("prod_name"),
-        sorter: (a, b) => a.prod_name.length - b.prod_name.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
         title: "Action",
@@ -296,7 +292,7 @@ const Manage_product_size = () => {
         fixed: "right",
         render: (text) => (
             <Button
-            icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+            icon={<DeleteOutlined twoToneColor="#E74C3C" />}
             style={{ cursor: "pointer" }}
             danger
             onClick={(e) => doDelete(text.id)}
