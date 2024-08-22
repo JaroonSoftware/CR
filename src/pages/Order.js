@@ -344,7 +344,12 @@ function Order() {
       }}
     >
     <Card
-        title="ยืนยันการสั่งซื้อ"
+        title={
+          <span>
+            ยืนยันการสั่งซื้อ
+            <span style={{ color: 'red' }}> (กรุณาแจ้งการชำระเงินภายใน 24 ชม.)</span>
+          </span>
+        }
         bordered={false}
         style={{ color: "red", textAlign: "left" }}
     >

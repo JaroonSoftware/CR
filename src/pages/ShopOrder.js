@@ -2,7 +2,7 @@
 import { SearchOutlined, ToolTwoTone,DeleteFilled, PrinterOutlined   } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Input, Space, Table, Row, Col, Card, Modal, Form, Select, DatePicker, Radio, Divider, InputNumber,Badge, } from "antd";
+import { Button, Input, Space, Table, Row, Col, Card, Modal, Form, Select, Flex, Typography, Divider, InputNumber,Badge } from "antd";
 import Swal from "sweetalert2";
 import ShopOrderService from "../service/ShopOrderService";
 import '../../src/assets/CSS.css';
@@ -204,8 +204,8 @@ const ShopOrder = () => {
             amount: data.amount,
             unit_name: data.unit,
             size_id: data.size_name,
-            price: data.price,
-            total: data.amount*data.price,
+            price: '',
+            total: '',
           }));
           setDataSourceEdit(SoDetail);
           //formEdit.setFieldsValue({ EditItem : PoDetail });
@@ -414,14 +414,14 @@ const ShopOrder = () => {
           let { status, data } = res;
           if (status === 200) {
             debugger
-            //setItemsOptionSize(data.size); 
+            setItemsOptionSize(data.size); 
             const newRowOptions = data.size.map(option => ({
                 key: option.value,
                 value: option.value,
                 label: option.label,
             }));
             let data1 = data.data[0];
-            setDataSource([...dataSource, { key: dataSource.length.toString(), No: dataSource.length+1, prod_code: data1.prod_code, prod_name: data1.prod_name, amount: 1, discount: 0 ,size_id: '', unit_id: data1.unitcode, unit_name: data1.unit, price: data1.price, total: data1.price,options: newRowOptions,}]);
+            setDataSource([...dataSource, { key: dataSource.length.toString(), No: dataSource.length+1, prod_code: data1.prod_code, prod_name: data1.prod_name, amount: 1, discount: 0 ,size_id: '', unit_id: data1.unitcode, unit_name: data1.unit, price: '', total: '',options: newRowOptions,}]);
           }
         })
         .catch((err) => {});
@@ -437,13 +437,17 @@ const ShopOrder = () => {
       });
     }
   };
-  const handleSelectChange = (value, record) => {
+  const handleSelectChange = (key,value,record) => {
+    const price = itemsOptionSize.find(option => option.value === value);
+    const index = dataSource.findIndex(item => key === item.key);
     const updatedDataSource = dataSource.map((item) => {
       if (item.key === record.key) {
         return { ...item, size_id: value };
       }
       return item;
     });
+    updatedDataSource[index]['price'] = price.price;
+    updatedDataSource[index]['total'] = price.price * updatedDataSource[index]['amount'];
     setDataSource(updatedDataSource);
   };
 
@@ -525,7 +529,7 @@ const ShopOrder = () => {
             showSearch
             style={{ height: 40,width: 130 }}
             placeholder="เลือกขนาดสินค้า"
-            value={record.size_id} onChange={(value) => handleSelectChange(value, record)}
+            value={record.size_id} onChange={(value) => handleSelectChange(record.key,value, record)}
           >
             {/* <Option value="" selected>- เลือกขนาด -</Option> */}
             {/* {itemsOptionSize.map(option => (
@@ -848,6 +852,11 @@ const ShopOrder = () => {
               <Input  />
             </Form.Item>
           </Col>
+        </Row>
+        <Row>
+            <Col span={12} className='p-0'>
+                  <Typography.Title className='m-0 !text-zinc-800' level={3}>รายละเอียดสั่งปัก</Typography.Title>
+            </Col> 
         </Row>
         <Divider style={{ margin: '5px 0' }}/>
         <Row gutter={[24, 0]}>

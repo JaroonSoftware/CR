@@ -30,7 +30,13 @@ const Manage_product_size = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
 
   const [itemsOptionChangeProduct, setItemsOptionChangeProduct] = useState("");
-
+  const validateNumber = (rule, value, callback) => {
+    if (!value || /^[0-9]+$/.test(value)) {
+      callback(); // ไม่มีข้อผิดพลาด
+    } else {
+      callback('โปรดป้อนตัวเลขเท่านั้น');
+    }
+  };
 
   const searchInput = useRef(null);
   useEffect(() => {
@@ -370,6 +376,23 @@ const Manage_product_size = () => {
                 disabled={isSelectDisabled}
                 />
               </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+              ราคาขาย
+              <Form.Item
+                name="price"
+                rules={[
+                {
+                    required: true,
+                    message: 'กรุณาใส่ราคาขาย!',
+                },
+                {
+                    validator: validateNumber, // เรียกใช้งาน validator
+                },
+                ]}
+            >
+                <Input placeholder="ใส่ราคาขาย" />
+            </Form.Item>
             </Col>
           </Row>
         </Form>

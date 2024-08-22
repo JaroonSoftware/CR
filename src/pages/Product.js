@@ -723,20 +723,20 @@ const Product = () => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-              ราคา
+              ราคาซื้อ
               <Form.Item
                 name="Addprice"
                 rules={[
                 {
                     required: true,
-                    message: 'กรุณาใส่ราคา!',
+                    message: 'กรุณาใส่ราคาซื้อ!',
                 },
                 {
                     validator: validateNumber, // เรียกใช้งาน validator
                 },
                 ]}
             >
-                <Input placeholder="ใส่ราคา" />
+                <Input placeholder="ใส่ราคาซื้อ" />
             </Form.Item>
             </Col>
           </Row>
@@ -869,20 +869,20 @@ const Product = () => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-              ราคา
+              ราคาซื้อ
               <Form.Item
                 name="Editprice"
                 rules={[
                 {
                     required: true,
-                    message: 'กรุณาใส่ราคา!',
+                    message: 'กรุณาใส่ราคาซื้อ!',
                 },
                 {
                     validator: validateNumber, // เรียกใช้งาน validator
                 },
                 ]}
             >
-                <Input placeholder="ใส่ราคา" />
+                <Input placeholder="ใส่ราคาซื้อ" />
             </Form.Item>
             </Col>
           </Row>

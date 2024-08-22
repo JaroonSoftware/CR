@@ -292,9 +292,27 @@ const Receipt = () => {
       title: "เลขที่ใบเสร็จ",
       dataIndex: "rcpt_no",
       key: "rcpt_no",
-      width: "25%",
+      width: "15%",
       ...getColumnSearchProps("rcpt_no"),
       sorter: (a, b) => a.rcpt_no.localeCompare(b.rcpt_no),
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "ชื่อผู้สั่ง",
+      dataIndex: "cus_name",
+      key: "cus_name",
+      width: "20%",
+      ...getColumnSearchProps("cus_name"),
+      sorter: (a, b) => a.cus_name.localeCompare(b.cus_name),
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "เบอร์ผู้สั่ง",
+      dataIndex: "tel",
+      key: "tel",
+      width: "10%",
+      ...getColumnSearchProps("tel"),
+      sorter: (a, b) => a.tel.localeCompare(b.tel),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -310,7 +328,7 @@ const Receipt = () => {
         title: "จำนวนเงิน",
         dataIndex: "amounts",
         key: "amounts",
-        width: "25%",
+        width: "10%",
         ...getColumnSearchProps("amounts"),
         sorter: (a, b) => {
           const intA = parseInt(a.amounts.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10); 
@@ -323,6 +341,7 @@ const Receipt = () => {
         title: "สถานะ",
         dataIndex: "status",
         key: "status",
+        width: "10%",
         ...getColumnSearchProps("status"),
         render: (data) => {
           if(data === "1"){ return <Badge status="success" text="ชำระเงินสำเร็จ" />}

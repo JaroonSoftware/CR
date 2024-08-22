@@ -20,7 +20,7 @@ include '../conn.php';
     if($type != ""){
         $sql .= " and pt.prodty_id = '".$type."'";
     }
-    
+    $sql .= " GROUP by p.prod_id";
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
