@@ -853,11 +853,6 @@ const ShopOrder = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row>
-            <Col span={12} className='p-0'>
-                  <Typography.Title className='m-0 !text-zinc-800' level={3}>รายละเอียดสั่งปัก</Typography.Title>
-            </Col> 
-        </Row>
         <Divider style={{ margin: '5px 0' }}/>
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
@@ -1003,12 +998,27 @@ const ShopOrder = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[24, 0]}>
-          <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+        <Row gutter={[24, 0]} style={{ marginBottom: 0 }}>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6} >
             เบอร์โทรศัพท์ 
               <Form.Item
                 name="Edittel"
                 rules={[{ required: true, message: 'จำเป็นต้องกรอกเบอร์โทรศัพท์!' }]}
+              >
+              <Input  />
+            </Form.Item>
+          </Col>
+        </Row>
+        <p>
+            <Divider orientation="left" style={{ marginTop: 0 }}>
+              รายละเอียดสั่งปัก
+            </Divider> 
+        </p>
+        <Row gutter={[24, 0]} style={{ marginBottom: 0 }}>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6} >
+            คำนำหน้าที่ปัก 
+              <Form.Item
+                name="Edittel"
               >
               <Input  />
             </Form.Item>
