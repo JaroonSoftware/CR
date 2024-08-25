@@ -11,10 +11,12 @@ const API_URL = {
   GET_AllShopOrder: `/ShopOrder/get_allShopOrder.php`,
   GET_ShopOrderById: `/ShopOrder/get_so_byid.php`,
   Cancel_ShopOrder: `/ShopOrder/cancel_ShopOrder.php`,
+  Action_Delivery: `/ShopOrder/action_delivery.php`,
+  ActionCancel_Delivery: `/ShopOrder/action_cancel_delivery.php`,
 };
 
 
-const PO = {
+const ShopOrder = {
 
   getOptionShopOrder: async (parm = {}) => {
     return api.get(`${API_URL.GET_Option}?${getParmeter(parm)}`).catch(e => { throw new Error("เกิดข้อผิดพลาด") });
@@ -43,10 +45,16 @@ const PO = {
   CancelShopOrder: (reqData) => {
     return api.post(API_URL.Cancel_ShopOrder, {...reqData}).catch(e => { throw new Error("เกิดข้อผิดพลาด") });
   },
+  ActionDelivery: (reqData) => {
+    return api.post(API_URL.Action_Delivery, {...reqData}).catch(e => { throw new Error("เกิดข้อผิดพลาด") });
+  },
+  ActionCancelDelivery: (reqData) => {
+    return api.post(API_URL.ActionCancel_Delivery, {...reqData}).catch(e => { throw new Error("เกิดข้อผิดพลาด") });
+  },
   
   // DeleteProductSize: (reqData) => {
   //   return api.post(API_URL.DEL_ProductSize, {...reqData}).catch(e => { throw new Error("เกิดข้อผิดพลาด") });
   // },
 };
 
-export default PO;
+export default ShopOrder;

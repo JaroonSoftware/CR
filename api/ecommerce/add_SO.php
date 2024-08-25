@@ -41,8 +41,8 @@ if($err==0){
     $sono = $row_so['so_no'];
     //end SO No
     //Insert SO
-    $strSQL = "INSERT INTO so (`so_no`, `cus_name`, `address`, `subdistrict`, `district`, `province`, `zipcode`, `tel`, `embroider_prefix`, `embroider_name`, `embroider_surname`, `totalprice`, `status`) ";
-    $strSQL .= " VALUES ('" . $sono . "','" . $_POST["cus_name"] . "','" . $_POST["address"] . "','" . $_POST["subdistrict"] . "','" . $_POST["district"] . "','" . $_POST["province"] . "','" . $_POST["zipcode"] . "','" . $_POST["tel"] . "','" . $_POST["embroider_prefix"] . "','" . $_POST["embroider_name"] . "','" . $_POST["embroider_surname"] . "','" . $total . "','รอชำระ'";
+    $strSQL = "INSERT INTO so (`so_no`, `cus_name`, `address`, `subdistrict`, `district`, `province`, `zipcode`, `tel`, `embroider_prefix`, `embroider_name`, `embroider_surname`, `totalprice`, `status`, `delivery_channel`) ";
+    $strSQL .= " VALUES ('" . $sono . "','" . $_POST["cus_name"] . "','" . $_POST["address"] . "','" . $_POST["subdistrict"] . "','" . $_POST["district"] . "','" . $_POST["province"] . "','" . $_POST["zipcode"] . "','" . $_POST["tel"] . "','" . $_POST["embroider_prefix"] . "','" . $_POST["embroider_name"] . "','" . $_POST["embroider_surname"] . "','" . $total . "','รอชำระ','" . $_POST["delivery_channel"] . "'";
     $strSQL .= ")";
     //echo $strSQL;
     $stmt = $conn->prepare($strSQL);

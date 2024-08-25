@@ -1,7 +1,7 @@
 import { SearchOutlined, ToolTwoTone } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
-import { Button,Input,Space,Table,Row,Col,Card,Modal,Form,Select,Badge,Upload} from "antd";
+import { Button,Input,Space,Table,Row,Col,Card,Modal,Form,Select,Badge,Upload, InputNumber, Collapse} from "antd";
 import Swal from "sweetalert2";
 import { BACKEND_URL_MAIN } from "../utils/util";
 import ApprovePaymentService from "../service/ApprovePaymentService";
@@ -17,6 +17,7 @@ function ApprovePayment() {
   const [AllPayment, setAllPayment] = useState("");
   const [OpenModalChkPayment, setOpenModalChkPayment] = useState(false);
   const [form] = Form.useForm();
+  const [form_search] = Form.useForm();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -172,6 +173,103 @@ function ApprovePayment() {
         text
       ),
   });
+
+  const Search = () => {
+    form_search.validateFields().then((v) => {
+      const data = Object.keys(v).reduce((acc, key) => {
+        acc[key] = v[key] !== undefined && v[key] !== null ? v[key] : '';
+        return acc;
+      }, {});
+      ApprovePaymentService
+        .getApprovePayment(data)
+        .then((res) => {
+          let { status, data } = res;
+        if (status === 200) {
+          setAllPayment(data);
+        }
+      })
+    });
+  };
+  const ClearSearch = () => {
+    form_search.resetFields();
+    Search();
+  };
+
+  const FormSearch = (
+    <Collapse
+      size="small"
+      // onChange={(e) => {
+      //   setActiveSearch(e);
+      // }}
+      bordered={true}
+      // activeKey={activeSearch}
+      items={[
+        {
+          key: "1",
+          label: <><SearchOutlined /><span> <b>ค้นหา</b> </span></>,  
+          children: (
+            <>
+              <Form form={form_search} layout="vertical" autoComplete="off">
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="ชื่อ-นามสกุลผู้ติดต่อ"
+                      name="nameSearch"
+                    >
+                       <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="เบอร์โทรศัพท์"
+                      name="telSearch"
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="จำนวนเงิน"
+                      name="moneySearch"
+                    >
+                      <InputNumber style={{ height: 40 }}/>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={8} md={12} lg={12} xl={12}>
+                    {/* Ignore */}
+                  </Col>
+                </Row>
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={8} md={12} lg={12} xl={12}>
+                    <div justify="flex-end" gap={8}>
+                      <Button
+                      style={{ cursor: "pointer" }}
+                      type="primary"
+                      onClick={(e) => Search()}
+                      >
+                      ค้นหา
+                      </Button>
+                      {' '}
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => ClearSearch()}
+                      >
+                        ล้าง
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </>
+          ),
+          showArrow: true,
+        },
+      ]}
+    />
+  );
   const columns = [
     {
       title: "ชื่อ-นามสกุลผู้ติดต่อ",
@@ -567,6 +665,10 @@ function ApprovePayment() {
           src={previewImage}
         />
       </Modal>      
+        <Form form={form} layout="vertical" autoComplete="off" >
+            {FormSearch}
+        </Form> 
+        <br></br>
       <div className="layout-content">
         <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">

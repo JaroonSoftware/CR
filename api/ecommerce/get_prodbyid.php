@@ -10,8 +10,24 @@ include '../conn.php';
 
     $id = $_POST['id'];
 
-	$sql = "SELECT p.prod_id ,p.prod_code,p.prod_name,p.prodty_id,p.price,p.unit,p.status FROM `product` p INNER Join product_category pc on p.prod_id =pc.prod_id LEFT join product_type pt on pt.prodty_id = p.prodty_id";
-	$sql .= " where p.status = 'Y' and p.prod_code = '".$id."'";
+	$sql = "SELECT DISTINCT
+            p.prod_id,
+            p.prod_code,
+            p.prod_name,
+            p.prodty_id,
+            p.price,
+            p.unit,
+            p.status
+        FROM 
+            product p
+        INNER JOIN 
+            product_category pc ON p.prod_id = pc.prod_id
+        LEFT JOIN 
+            product_type pt ON pt.prodty_id = p.prodty_id
+        WHERE 
+            p.status = 'Y' 
+            AND p.prod_code= '".$id."'
+        GROUP BY p.prod_id, p.prod_code, p.prod_name, p.prodty_id, p.price, p.unit, p.status;";
     
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
@@ -25,7 +41,6 @@ include '../conn.php';
 		$nestedObject->id = $row['prod_id'];
         $nestedObject->prod_code = $row['prod_code'];
         $nestedObject->prod_name = $row['prod_name'];
-        $nestedObject->price = $row['price'];
         $nestedObject->unit = $row['unit'];
         //echo $row['prod_id'];
         $stmt2 = $conn->prepare("SELECT * FROM `product_img` where prod_id = '".$row['prod_id']."'");
@@ -40,7 +55,7 @@ include '../conn.php';
             $nestedObject->file = [];
         }
 
-        $sql_size = "SELECT CONCAT(s.size_id,'_',s.size_name) as value,s.size_name as label  from size s LEFT JOIN product_size p on s.size_id = p.size_id ";
+        $sql_size = "SELECT s.size_id as value,s.size_name as label  from size s LEFT JOIN product_size p on s.size_id = p.size_id ";
         $sql_size .= " where p.status = 'Y' and p.prod_id = '" .$row['prod_id']. "'";
         $stmt_size = $conn->prepare($sql_size);
         $stmt_size->execute();
