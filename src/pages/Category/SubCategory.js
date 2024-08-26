@@ -173,8 +173,6 @@ const SubCategory = () => {
       key: "subctgy_name",
       width: "30%",
       ...getColumnSearchProps("ctgy_name"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "สถานะการใช้งาน",
@@ -182,8 +180,6 @@ const SubCategory = () => {
         key: "status",
         width: "10%",
         ...getColumnSearchProps("status"),
-        sorter: (a, b) => a.statutype.length - b.statutype.length,
-        sortDirections: ["descend", "ascend"],
         render: (data) => (
           <div>
             {data === "Y" ? (
@@ -231,9 +227,10 @@ const SubCategory = () => {
         fixed: "right",
         render: (text) => (
             <Button
-            icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+            icon={<ToolTwoTone />}
             style={{ cursor: "pointer" }}
-            danger
+            type="primary"
+            ghost
             onClick={(e) => showEditModal(text.subctgy_id)}
           >
             แก้ใข

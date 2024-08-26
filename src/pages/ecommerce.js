@@ -174,7 +174,11 @@ const Login = () => {
       let { status, data } = res;
       let data_prod = data.data[0];
       if (status === 200) {
-        setIsProd(data_prod);
+        //setIsProd(data_prod);
+        setIsProd(prevState => ({
+          ...prevState,
+          prod_name: data_prod.prod_name
+        }));
         let file = data_prod.file.map(data => ({ ...data, file_name:  `${BACKEND_URL_MAIN}/uploads/` + data.file_name }));   
         console.log(file) ;
         const formattedFileList_prod = file.map((data) => ({
@@ -197,7 +201,9 @@ const Login = () => {
   };
   //Check amount Product
   const Checkamount = (data) => {
-    setSizeProd(data);
+    let size = itemsSize.find(item => item.value === data);
+    size = size ? `${size.value}_${size.label}` : '';
+    setSizeProd(size);
     let para = {
       size : data,
       prod : ProdCode
@@ -208,6 +214,10 @@ const Login = () => {
       let { status, data } = res;
       let dataA = data.data;
       if (status === 200) {
+        setIsProd(prevState => ({
+            ...prevState,
+            price: dataA.price
+        }));
         setmaxProd(dataA.amount);
         if(dataA.amount <= 5){
           setalertAmount("สินค้าเหลือ "+dataA.amount);
@@ -236,6 +246,7 @@ const Login = () => {
     setamountProd(0);
     setSizeProd("");
     setIsModalproductOpen(false);
+    setIsProd([]);
   };
 
   const AddProdInCart = () => {
@@ -794,7 +805,7 @@ const Login = () => {
                 </Form.Item>
                 <span style={{ color: 'red' }}> {alertAmount}</span>
               </Col>
-              <Divider plain>ราคา</Divider>
+              <Divider plain>ราคา (ต่อชิ้น)</Divider>
               <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                 {/* <span style={{ float: "right" }}>รวม</span> */}
                 <span style={{ fontSize: 40, float: "right" }}>{IsProd.price}</span>

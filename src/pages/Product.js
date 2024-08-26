@@ -424,8 +424,6 @@ const Product = () => {
         key: "prod_code",
         width: "10%",
         ...getColumnSearchProps("prod_code"),
-        sorter: (a, b) => a.unit.length - b.unit.length,
-        sortDirections: ["descend", "ascend"],
     },
     {
       title: "สินค้า",
@@ -433,8 +431,6 @@ const Product = () => {
       key: "prod_name",
       width: "25%",
       ...getColumnSearchProps("prod_name"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "ประเภทสินค้า",
@@ -442,8 +438,6 @@ const Product = () => {
       key: "prod_type",
       width: "10%",
       ...getColumnSearchProps("prod_type"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "ราคาสินค้า",
@@ -451,7 +445,11 @@ const Product = () => {
       key: "price",
       width: "10%",
       ...getColumnSearchProps("price"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
+      sorter: (a, b) => {
+        const intA = parseInt(a.price.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10); 
+        const intB = parseInt(b.price.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10);
+        return intA - intB;
+      },
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -460,8 +458,6 @@ const Product = () => {
       key: "unit",
       width: "10%",
       ...getColumnSearchProps("unit"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "สถานะการใช้งาน",
@@ -469,8 +465,6 @@ const Product = () => {
       key: "status",
       width: "20%",
       ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.statutype.length - b.statutype.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => (
         <div>
           {data === "Y" ? (
@@ -488,11 +482,12 @@ const Product = () => {
         fixed: "right",
         render: (text) => (
             <Button
-            icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+            icon={<ToolTwoTone />}
             style={{ cursor: "pointer" }}
-            danger
-            onClick={(e) => showEditModal(text.prod_id)}
-          >
+            type="primary"
+            ghost
+              onClick={(e) => showEditModal(text.prod_id)}
+            >
             แก้ใข
           </Button>
           ),
@@ -728,20 +723,20 @@ const Product = () => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-              ราคา
+              ราคาซื้อ
               <Form.Item
                 name="Addprice"
                 rules={[
                 {
                     required: true,
-                    message: 'กรุณาใส่ราคา!',
+                    message: 'กรุณาใส่ราคาซื้อ!',
                 },
                 {
                     validator: validateNumber, // เรียกใช้งาน validator
                 },
                 ]}
             >
-                <Input placeholder="ใส่ราคา" />
+                <Input placeholder="ใส่ราคาซื้อ" />
             </Form.Item>
             </Col>
           </Row>
@@ -874,20 +869,20 @@ const Product = () => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-              ราคา
+              ราคาซื้อ
               <Form.Item
                 name="Editprice"
                 rules={[
                 {
                     required: true,
-                    message: 'กรุณาใส่ราคา!',
+                    message: 'กรุณาใส่ราคาซื้อ!',
                 },
                 {
                     validator: validateNumber, // เรียกใช้งาน validator
                 },
                 ]}
             >
-                <Input placeholder="ใส่ราคา" />
+                <Input placeholder="ใส่ราคาซื้อ" />
             </Form.Item>
             </Col>
           </Row>

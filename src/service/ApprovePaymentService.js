@@ -1,8 +1,5 @@
 
 import { requestService as api , getParmeter} from "./Request.service" 
-import axios from "axios";
-import { MEDTHOD } from "../constant/constant";
-import { BACKEND_URL } from "../utils/util";
 const API_URL = {
   GET_ApprovePayment: `/approvepayment/get_Payment.php`,
   GET_ApprovePayment_ByID: `/approvepayment/get_Payment_byid.php`,

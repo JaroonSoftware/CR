@@ -20,8 +20,8 @@ $so_no = $row_so['so_no'];
 //end SO No
 $conn->beginTransaction();
 //Insert SO 
-$strSQL = "INSERT INTO so (`so_no`, `cus_name`, `address`, `subdistrict`, `district`, `province`, `zipcode`, `tel`, `totalprice`, `status`, `c_by`) ";
-$strSQL .= " VALUES ('" . $so_no . "','" . $_POST["cus_name"] . "','" . $_POST["address"] . "','" . $_POST["subdistrict"] . "','" . $_POST["district"] . "','" . $_POST["province"] . "','" . $_POST["zipcode"] . "','" . $_POST["tel"] . "','" . $total . "','รอชำระ','" . $action_by . "' ";
+$strSQL = "INSERT INTO so (`so_no`, `cus_name`, `address`, `subdistrict`, `district`, `province`, `zipcode`, `tel`, `totalprice`, `status`, `delivery_channel`, `c_by`) ";
+$strSQL .= " VALUES ('" . $so_no . "','" . $_POST["cus_name"] . "','" . $_POST["address"] . "','" . $_POST["subdistrict"] . "','" . $_POST["district"] . "','" . $_POST["province"] . "','" . $_POST["zipcode"] . "','" . $_POST["tel"] . "','" . $total . "','รอชำระ','" . $_POST["delivery_channel"] . "','" . $action_by . "' ";
 $strSQL .= ")";
 //echo $strSQL;
 $stmt = $conn->prepare($strSQL);

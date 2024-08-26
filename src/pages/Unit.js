@@ -160,8 +160,6 @@ function Unit() {
       key: "unit",
       width: "30%",
       ...getColumnSearchProps("unit"),
-      sorter: (a, b) => a.unit.length - b.unit.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "สถานะการใช้งาน",
@@ -169,8 +167,6 @@ function Unit() {
       key: "statusunit",
       width: "20%",
       ...getColumnSearchProps("statusunit"),
-      sorter: (a, b) => a.statusunit.length - b.statusunit.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => (
         <div>
           {data === "Y" ? (
@@ -188,9 +184,10 @@ function Unit() {
       fixed: "right",
       render: (text) => (
         <Button
-          icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+          icon={<ToolTwoTone />}
           style={{ cursor: "pointer" }}
-          danger
+          type="primary"
+          ghost
           onClick={(e) => showEditModal(text.unitcode)}
         >
           แก้ใข

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SearchOutlined, ToolTwoTone } from "@ant-design/icons";
+import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -300,8 +300,6 @@ const Manage_product_category = () => {
       key: "ctgy_name",
       width: "30%",
       ...getColumnSearchProps("ctgy_name"),
-      sorter: (a, b) => a.ctgy_name.length - b.ctgy_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "หมวดหมู่ย่อย",
@@ -309,8 +307,6 @@ const Manage_product_category = () => {
         key: "subctgy_name",
         width: "30%",
         ...getColumnSearchProps("subctgy_name"),
-        sorter: (a, b) => a.subctgy_name.length - b.subctgy_name.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
         title: "สินค้า",
@@ -318,8 +314,6 @@ const Manage_product_category = () => {
         key: "prod_name",
         width: "25%",
         ...getColumnSearchProps("prodty_name"),
-        sorter: (a, b) => a.prod_name.length - b.prod_name.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
         title: "Action",
@@ -328,7 +322,7 @@ const Manage_product_category = () => {
         fixed: "right",
         render: (text) => (
             <Button
-            icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+            icon={<DeleteOutlined twoToneColor="#E74C3C" />}
             style={{ cursor: "pointer" }}
             danger
             onClick={(e) => doDelete(text.id)}

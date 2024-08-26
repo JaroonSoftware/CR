@@ -9,9 +9,9 @@
     if ($existing) {
         echo json_encode(array('status' => '0','message'=> 'Data duplicate!'));
     }else{
-    $strSQL = "INSERT INTO product_size (`prod_id`,`size_id`,`c_by`) ";
+    $strSQL = "INSERT INTO product_size (`prod_id`,`size_id`,`price`,`c_by`) ";
     //  ,`s_date`,`s_time`, s_user) ";
-    $strSQL .= " VALUES ('".$_POST["prod_id"]."','".$_POST["size_id"]."','".$action_by."' ";
+    $strSQL .= " VALUES ('".$_POST["prod_id"]."','".$_POST["size_id"]."','".$_POST["price"]."','".$action_by."' ";
     $strSQL .= ")";	
     //echo $strSQL;
 	$stmt = $conn->prepare($strSQL);    

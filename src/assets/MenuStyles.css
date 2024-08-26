@@ -1,0 +1,16 @@
+.ant-menu-item {
+    white-space: normal; /* อนุญาตให้ข้อความมีหลายบรรทัด */
+    height: auto; /* ให้ความสูงปรับตามจำนวนบรรทัดของข้อความ */
+    line-height: normal; /* จัดระยะห่างระหว่างบรรทัดให้เหมาะสม */
+    padding: 8px 16px; /* ปรับ padding ตามความต้องการ */
+}
+.ant-menu-item .ant-menu-item-icon {
+    margin-right: 8px; /* กำหนดระยะห่างระหว่างไอคอนและข้อความ */
+}
+.ant-menu-item .ant-menu-title-content {
+    display: inline-block; /* ทำให้เนื้อหาแสดงผลเป็นบล็อคสำหรับการบรรทัดใหม่ */
+    max-width: 150px; /* กำหนดความกว้างสูงสุด */
+    overflow: hidden; /* ป้องกันไม่ให้ข้อความล้น */
+    white-space: normal; /* อนุญาตให้ข้อความมีหลายบรรทัด */
+    line-height: 1.2; /* ปรับระยะห่างระหว่างบรรทัด */
+}

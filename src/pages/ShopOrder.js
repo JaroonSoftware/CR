@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { SearchOutlined, ToolTwoTone,DeleteFilled, PrinterOutlined   } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
-import { Button, Input, Space, Table, Row, Col, Card, Modal, Form, Select, DatePicker, Radio, Divider, InputNumber,Badge, } from "antd";
+import { Button, Input, Space, Table, Row, Col, Card, Modal, Form, Select, Divider, InputNumber,Badge,Collapse } from "antd";
 import Swal from "sweetalert2";
 import ShopOrderService from "../service/ShopOrderService";
 import '../../src/assets/CSS.css';
@@ -17,6 +16,7 @@ const ShopOrder = () => {
   const [OpenModalEditShopOrder, setOpenModalEditShopOrder] = useState(false);
   const [formAdd] = Form.useForm();
   const [formEdit] = Form.useForm();
+  const [form] = Form.useForm();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const { Option } = Select;
@@ -39,7 +39,7 @@ const ShopOrder = () => {
 
   const searchInput = useRef(null);
   useEffect(() => {
-    ShowShopOrder();
+    Search();
 
     async function getItemOptionProduct(){
       const {data, status} =  await ShopOrderService.getOptionShopOrder({Option:"Product"}) 
@@ -164,16 +164,27 @@ const ShopOrder = () => {
       ),
   });  
 
-  const ShowShopOrder = () => {
-    ShopOrderService.getAllShopOrder()
-      .then((res) => {
-        let { status, data } = res;
+  const Search = () => {
+    form.validateFields().then((v) => {
+      const data = Object.keys(v).reduce((acc, key) => {
+        acc[key] = v[key] !== undefined && v[key] !== null ? v[key] : '';
+        return acc;
+      }, {});
+      ShopOrderService
+        .getAllShopOrder(data)
+        .then((res) => {
+          let { status, data } = res;
         if (status === 200) {
           setAllShopOrder(data);
         }
       })
-      .catch((err) => {});
+    });
   };
+  const ClearSearch = () => {
+    form.resetFields();
+    Search();
+  };
+  
 
   const showEditModal = (data,action) => {
     let para = {
@@ -193,6 +204,10 @@ const ShopOrder = () => {
           formEdit.setFieldValue("Editprovince", data_so.province);
           formEdit.setFieldValue("Editzipcode", data_so.zipcode);
           formEdit.setFieldValue("Edittel", data_so.tel);
+          formEdit.setFieldValue("Editdelivery_channel", data_so.delivery_channel);
+          formEdit.setFieldValue("Editembroider_prefix", data_so.embroider_prefix|| '');
+          formEdit.setFieldValue("Editembroider_name", data_so.embroider_name|| '');
+          formEdit.setFieldValue("Editembroider_surname", data_so.embroider_surname|| '');
           let detailSo = data.dataDetail;  
           setOrderNo(data_so.so_no);
           if(action === "Read"){setIsdisabled(true); setTextTitle('รายละเอียด Order') }else{ setIsdisabled(false); setTextTitle('แก้ไข Order')}
@@ -202,10 +217,10 @@ const ShopOrder = () => {
             prod_code: data.prod_code,
             prod_name: data.prod_name,
             amount: data.amount,
-            unit_name: data.unit,
+            unit: data.statusItem,
             size_id: data.size_name,
             price: data.price,
-            total: data.amount*data.price,
+            total: data.totalprice,
           }));
           setDataSourceEdit(SoDetail);
           //formEdit.setFieldsValue({ EditItem : PoDetail });
@@ -301,7 +316,7 @@ const ShopOrder = () => {
               icon: "success",
             });
 
-            ShowShopOrder();
+            Search();
             setOpenModalAddShopOrder(false);
             formAdd.resetFields();
             setDataSource([]);
@@ -332,7 +347,7 @@ const ShopOrder = () => {
               icon: "success",
             });
             setOrderNo("");
-            ShowShopOrder();
+            Search();
             setOpenModalEditShopOrder(false);
             setDataSourceEdit([]);
           } else {
@@ -374,7 +389,7 @@ const ShopOrder = () => {
                  icon: "success",
                });
                setOrderNo("");
-               ShowShopOrder();
+               Search();
                setOpenModalEditShopOrder(false);
                setDataSourceEdit([]);
              } else {
@@ -414,14 +429,14 @@ const ShopOrder = () => {
           let { status, data } = res;
           if (status === 200) {
             debugger
-            //setItemsOptionSize(data.size); 
+            setItemsOptionSize(data.size); 
             const newRowOptions = data.size.map(option => ({
                 key: option.value,
                 value: option.value,
                 label: option.label,
             }));
             let data1 = data.data[0];
-            setDataSource([...dataSource, { key: dataSource.length.toString(), No: dataSource.length+1, prod_code: data1.prod_code, prod_name: data1.prod_name, amount: 1, discount: 0 ,size_id: '', unit_id: data1.unitcode, unit_name: data1.unit, price: data1.price, total: data1.price,options: newRowOptions,}]);
+            setDataSource([...dataSource, { key: dataSource.length.toString(), No: dataSource.length+1, prod_code: data1.prod_code, prod_name: data1.prod_name, amount: 1, discount: 0 ,size_id: '', unit_id: data1.unitcode, unit_name: data1.unit, price: '', total: '',options: newRowOptions,}]);
           }
         })
         .catch((err) => {});
@@ -437,13 +452,17 @@ const ShopOrder = () => {
       });
     }
   };
-  const handleSelectChange = (value, record) => {
+  const handleSelectChange = (key,value,record) => {
+    const price = itemsOptionSize.find(option => option.value === value);
+    const index = dataSource.findIndex(item => key === item.key);
     const updatedDataSource = dataSource.map((item) => {
       if (item.key === record.key) {
         return { ...item, size_id: value };
       }
       return item;
     });
+    updatedDataSource[index]['price'] = price.price;
+    updatedDataSource[index]['total'] = price.price * updatedDataSource[index]['amount'];
     setDataSource(updatedDataSource);
   };
 
@@ -475,6 +494,76 @@ const ShopOrder = () => {
       setDataSource(newData);
     }
   };
+  const actionDelivery = (id) => {
+    let parm = {
+      id : id,
+      action : "Delivery" 
+    } 
+    Swal.fire({
+        title: "ยืนยันการจัดส่ง Order ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          ShopOrderService.ActionDelivery(parm).then( res => {
+            const { status, data } = res;
+            if (status === 200 && data.status === '1') {
+                Swal.fire({
+                 title: "<strong>จัดส่ง Order สำเร็จ</strong>",
+                 html: data.message,
+                 icon: "success",
+                });
+                Search();
+            } else {
+               Swal.fire({
+                 title: "<strong>ผิดพลาด!</strong>",
+                 html: data.message,
+                 icon: "error",
+               });
+            }
+          });   
+        }
+      });
+  }
+  const actionCancelDelivery = (id) => {
+    let parm = {
+      id : id,
+      action : "CancelDelivery" 
+    } 
+    Swal.fire({
+        title: "ยืนยันยกเลิกการจัดส่ง Order ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          ShopOrderService.ActionCancelDelivery(parm).then( res => {
+            const { status, data } = res;
+            if (status === 200 && data.status === '1') {
+                Swal.fire({
+                 title: "<strong>ยกเลิกจัดส่ง Order สำเร็จ</strong>",
+                 html: data.message,
+                 icon: "success",
+                });
+                Search();
+            } else {
+               Swal.fire({
+                 title: "<strong>ผิดพลาด!</strong>",
+                 html: data.message,
+                 icon: "error",
+               });
+            }
+          });   
+        }
+      });
+  }
   const columnsDetailSO = [
     {
       title: '',
@@ -525,7 +614,7 @@ const ShopOrder = () => {
             showSearch
             style={{ height: 40,width: 130 }}
             placeholder="เลือกขนาดสินค้า"
-            value={record.size_id} onChange={(value) => handleSelectChange(value, record)}
+            value={record.size_id} onChange={(value) => handleSelectChange(record.key,value, record)}
           >
             {/* <Option value="" selected>- เลือกขนาด -</Option> */}
             {/* {itemsOptionSize.map(option => (
@@ -607,7 +696,7 @@ const ShopOrder = () => {
       key: 'size_id',
     },
     {
-      title: 'ราคา',
+      title: 'ราคา (ต่อชิ้น)',
       dataIndex: 'price',
       key: 'price',
     },
@@ -630,19 +719,23 @@ const ShopOrder = () => {
       title: "Order No",
       dataIndex: "so_no",
       key: "so_no",
-      width: "20%",
+      width: "15%",
       
       ...getColumnSearchProps("so_no"),
-      sorter: (a, b) => a.so_no.length - b.so_no.length,
+      sorter: (a, b) => a.so_no.localeCompare(b.so_no),
       sortDirections: ["descend", "ascend"],
     },
     {
         title: "วันทีขาย Order",
         dataIndex: "so_date",
         key: "so_date",
-        width: "20%",
+        width: "10%",
         ...getColumnSearchProps("so_date"),
-        sorter: (a, b) => a.so_date.length - b.so_date.length,
+        sorter: (a, b) => {
+          const dateA = new Date(a.so_date.split('-').reverse().join('-')); // แปลงจาก "DD-MM-YYYY" เป็น "YYYY-MM-DD"
+          const dateB = new Date(b.so_date.split('-').reverse().join('-'));
+          return dateA - dateB; // เปรียบเทียบ Date object
+        },
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -651,17 +744,13 @@ const ShopOrder = () => {
         key: "cus_name",
         width: "20%",
         ...getColumnSearchProps("cus_name"),
-        sorter: (a, b) => a.cus_name.length - b.cus_name.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
-        title: "สถานะ",
+        title: "สถานะคำสั่งซื้อ",
         dataIndex: "status",
         key: "status",
-        width: "20%",
+        width: "15%",
         ...getColumnSearchProps("status"),
-        sorter: (a, b) => a.status.length - b.status.length,
-        sortDirections: ["descend", "ascend"],
         render: (data) => {
           if(data === "ชำระเงินแล้ว"){ return <Badge status="success" text="ชำระเงินแล้ว" />}
           if(data === "รอชำระ"){ return <Badge color="yellow" text="รอชำระ" />}  
@@ -669,9 +758,20 @@ const ShopOrder = () => {
         },
       },
       {
+        title: "สถานะการจัดส่ง",
+        dataIndex: "status_delivery",
+        key: "status_delivery",
+        width: "15%",
+        ...getColumnSearchProps("status_delivery"),
+        render: (data) => {
+          if(data === "จัดส่งแล้ว"){ return <Badge status="success" text={data} />}
+          if(data === "รอจัดส่ง" || data === null){ return <Badge color="yellow" text="รอจัดส่ง" />}  
+        },
+      },
+      {
         title: "Action",
         key: "operation",
-        width: "35%",
+        width: "40%",
         fixed: "right",
         render: (text) => {
           if(text.status === "รอชำระ"){
@@ -717,6 +817,24 @@ const ShopOrder = () => {
             >
             ใบจ่าหน้า
             </Button>
+            {' '}
+            {(text.status_delivery === 'รอจัดส่ง' || text.status_delivery === null) && (
+              <Button
+                style={{ cursor: "pointer" }}
+                onClick={(e) => actionDelivery(text.so_no)}
+              >
+                จัดส่ง Order
+              </Button>
+            )}
+            {' '}
+            {text.status_delivery === 'จัดส่งแล้ว' && (
+              <Button
+                style={{ cursor: "pointer" }}
+                onClick={(e) => actionCancelDelivery(text.so_no)}
+              >
+                ยกเลิกจัดส่ง Order
+              </Button>
+            )}
             </span>
             );
           }
@@ -725,6 +843,73 @@ const ShopOrder = () => {
       },
   ].filter((item) => !item.hidden);
   
+  const FormSearch = (
+    <Collapse
+      size="small"
+      // onChange={(e) => {
+      //   setActiveSearch(e);
+      // }}
+      bordered={true}
+      // activeKey={activeSearch}
+      items={[
+        {
+          key: "1",
+          label: <><SearchOutlined /><span> <b>ค้นหา</b> </span></>,  
+          children: (
+            <>
+              <Form form={form} layout="vertical" autoComplete="off">
+                <Row gutter={[8, 8]}>
+                <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="ชื่อ-นามสกุลลูกค้า"
+                      name="nameSearch"
+                    >
+                       <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="เบอร์โทรศัพท์"
+                      name="telSearch"
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={8} md={12} lg={12} xl={12}>
+                    {/* Ignore */}
+                  </Col>
+                </Row>
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={8} md={12} lg={12} xl={12}>
+                    <div justify="flex-end" gap={8}>
+                      <Button
+                      style={{ cursor: "pointer" }}
+                      type="primary"
+                      onClick={(e) => Search()}
+                      >
+                      ค้นหา
+                      </Button>
+                      {' '}
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => ClearSearch()}
+                      >
+                        ล้าง
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </>
+          ),
+          showArrow: true,
+        },
+      ]}
+    />
+  );
   return (
     <>
       <div className="layout-content">
@@ -736,7 +921,10 @@ const ShopOrder = () => {
         </Button>
         <br></br>
         <br></br>
-
+        <Form form={form} layout="vertical" autoComplete="off" >
+            {FormSearch}
+        </Form> 
+        <br></br>
         {/* PopUp ADD Order */}
         <Modal
           open={OpenModalAddShopOrder}
@@ -846,6 +1034,18 @@ const ShopOrder = () => {
               <Input  />
             </Form.Item>
           </Col>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+              ช่องทางการจัดส่ง <span style={{ color: 'red' }}>*</span>
+              <Form.Item
+                name="delivery_channel"
+              >
+                <Select placeholder="เลือกช่องทางการจัดส่ง" style={{ height: 40 }}>
+                  <Select.Option value="store">รับที่ร้าน</Select.Option>
+                  <Select.Option value="school">รับที่โรงเรียน</Select.Option>
+                  <Select.Option value="post">ส่งไปรษณีย์</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col> 
         </Row>
         <Divider style={{ margin: '5px 0' }}/>
         <Row gutter={[24, 0]}>
@@ -992,14 +1192,59 @@ const ShopOrder = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[24, 0]}>
-          <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+        <Row gutter={[24, 0]} style={{ marginBottom: 0 }}>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6} >
             เบอร์โทรศัพท์ 
               <Form.Item
                 name="Edittel"
                 rules={[{ required: true, message: 'จำเป็นต้องกรอกเบอร์โทรศัพท์!' }]}
               >
               <Input  />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+              ช่องทางการจัดส่ง <span style={{ color: 'red' }}>*</span>
+              <Form.Item
+                name="Editdelivery_channel"
+              >
+                <Select placeholder="เลือกช่องทางการจัดส่ง" style={{ height: 40 }}>
+                  <Select.Option value="store">รับที่ร้าน</Select.Option>
+                  <Select.Option value="school">รับที่โรงเรียน</Select.Option>
+                  <Select.Option value="post">ส่งไปรษณีย์</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col> 
+        </Row>
+        <p>
+            <Divider orientation="left" style={{ marginTop: 0 }}>
+              รายละเอียดสั่งปัก
+            </Divider> 
+        </p>
+        <Row gutter={[24, 0]}>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+            คำนำหน้า (ที่สั่งปัก)
+            <Form.Item
+              name="Editembroider_prefix"
+              style={{ width: '100%' }}
+            >
+            <Input disabled={Isdisabled} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={9} lg={9} xl={9}>
+            ชื่อ (ที่สั่งปัก)
+            <Form.Item
+              name="Editembroider_name"
+              style={{ width: '100%' }}
+            >
+            <Input disabled={Isdisabled} />    
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={9} lg={9} xl={9}>
+            นามสกุล (ที่สั่งปัก) 
+            <Form.Item
+              name="Editembroider_surname"
+            >
+            <Input disabled={Isdisabled} />
             </Form.Item>
           </Col>
         </Row>

@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET"){
                 $sql = "
                 select  p.prod_id value,CONCAT(p.prod_code, ' : ', p.prod_name)as label 
                 from product p Inner Join stock s on p.prod_code = s.prod_code
-                where p.status = 'Y'"; 
+                where p.status = 'Y' GROUP BY p.prod_id"; 
 
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();

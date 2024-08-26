@@ -136,31 +136,29 @@ function Stock() {
       dataIndex: "prod_name",
       key: "prod_name",
       ...getColumnSearchProps("prod_name"),
-      sorter: (a, b) => a.prod_name.length - b.prod_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "ประเภทสินค้า ",
         dataIndex: "type",
         key: "type",
         ...getColumnSearchProps("type"),
-        sorter: (a, b) => a.type.length - b.type.length,
-        sortDirections: ["descend", "ascend"],
     },
     {
         title: "ขนาดสินค้า ",
         dataIndex: "size",
         key: "size",
         ...getColumnSearchProps("size"),
-        sorter: (a, b) => a.size.length - b.size.length,
-        sortDirections: ["descend", "ascend"],
     },
     {
         title: "จำนวนสินค้าในคลัง ",
         dataIndex: "count",
         key: "count",
         ...getColumnSearchProps("count"),
-        sorter: (a, b) => a.count.length - b.count.length,
+        sorter: (a, b) => {
+          const intA = parseInt(a.count.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10); 
+          const intB = parseInt(b.count.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10);
+          return intA - intB;
+        },
         sortDirections: ["descend", "ascend"],
         render: (data) => {
             if(data <= 5){ return <span style={{ color: 'red' }}>{data}</span>}

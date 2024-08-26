@@ -11,8 +11,9 @@ include '../conn.php';
     $size = $_POST['size'];
     $prod = $_POST['prod'];
 
-	$sql = "SELECT amount FROM `stock` ";
-	$sql .= " where prod_code = '".$prod."' and size_id = '".$size."'";
+	$sql = "SELECT amount, (SELECT price FROM product_size WHERE prod_id  = p.prod_id AND size_id = s.size_id and status = 'Y' LIMIT 1) AS price  FROM `stock` s ";
+	$sql .= " left join product p on p.prod_code = s.prod_code";
+	$sql .= " where s.prod_code = '".$prod."' and s.size_id = '".$size."'";
     
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();

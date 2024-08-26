@@ -156,7 +156,7 @@ function Supplier() {
       key: "supcode",
       width: "15%",
       ...getColumnSearchProps("supcode"),
-      sorter: (a, b) => a.supcode.length - b.supcode.length,
+      sorter: (a, b) => a.supcode.localeCompare(b.supcode),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -165,17 +165,13 @@ function Supplier() {
       key: "supname",
       width: "25%",
       ...getColumnSearchProps("supname"),
-      sorter: (a, b) => a.supname.length - b.supname.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "จังหวัด",
-      dataIndex: "district",
-      key: "district",
+      dataIndex: "province",
+      key: "province",
       width: "20%",
-      ...getColumnSearchProps("district"),
-      sorter: (a, b) => a.district.length - b.district.length,
-      sortDirections: ["descend", "ascend"],
+      ...getColumnSearchProps("province"),
     },
     {
       title: "สถานะการใช้งาน",
@@ -183,8 +179,6 @@ function Supplier() {
       key: "statussup",
       width: "20%",
       ...getColumnSearchProps("statussup"),
-      sorter: (a, b) => a.statussup.length - b.statussup.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => (
         <div>
           {data === "Y" ? (
@@ -202,9 +196,10 @@ function Supplier() {
       fixed: "right",
       render: (text) => (
         <Button
-          icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+          icon={<ToolTwoTone />}
           style={{ cursor: "pointer" }}
-          danger
+          type="primary"
+          ghost
           onClick={(e) => showEditModal(text.supcode)}
         >
           แก้ใข

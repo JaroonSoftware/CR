@@ -1,4 +1,4 @@
-import { SearchOutlined, ToolTwoTone } from "@ant-design/icons";
+import { SearchOutlined, DeleteOutlined  } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
 import {
@@ -30,7 +30,13 @@ const Manage_product_size = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
 
   const [itemsOptionChangeProduct, setItemsOptionChangeProduct] = useState("");
-
+  const validateNumber = (rule, value, callback) => {
+    if (!value || /^[0-9]+$/.test(value)) {
+      callback(); // ไม่มีข้อผิดพลาด
+    } else {
+      callback('โปรดป้อนตัวเลขเท่านั้น');
+    }
+  };
 
   const searchInput = useRef(null);
   useEffect(() => {
@@ -277,8 +283,6 @@ const Manage_product_size = () => {
       key: "size_name",
       width: "25%",
       ...getColumnSearchProps("size_name"),
-      sorter: (a, b) => a.size_name.length - b.size_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "สินค้า",
@@ -286,8 +290,6 @@ const Manage_product_size = () => {
         key: "prod_name",
         width: "25%",
         ...getColumnSearchProps("prod_name"),
-        sorter: (a, b) => a.prod_name.length - b.prod_name.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
         title: "Action",
@@ -296,7 +298,7 @@ const Manage_product_size = () => {
         fixed: "right",
         render: (text) => (
             <Button
-            icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+            icon={<DeleteOutlined twoToneColor="#E74C3C" />}
             style={{ cursor: "pointer" }}
             danger
             onClick={(e) => doDelete(text.id)}
@@ -374,6 +376,23 @@ const Manage_product_size = () => {
                 disabled={isSelectDisabled}
                 />
               </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+              ราคาขาย
+              <Form.Item
+                name="price"
+                rules={[
+                {
+                    required: true,
+                    message: 'กรุณาใส่ราคาขาย!',
+                },
+                {
+                    validator: validateNumber, // เรียกใช้งาน validator
+                },
+                ]}
+            >
+                <Input placeholder="ใส่ราคาขาย" />
+            </Form.Item>
             </Col>
           </Row>
         </Form>

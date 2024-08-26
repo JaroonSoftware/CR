@@ -1,7 +1,7 @@
 import { SearchOutlined, ToolTwoTone } from "@ant-design/icons";
 import React, { useRef, useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
-import { Button,Input,Space,Table,Row,Col,Card,Modal,Form,Select,Badge,Upload} from "antd";
+import { Button,Input,Space,Table,Row,Col,Card,Modal,Form,Select,Badge,Upload, InputNumber, Collapse} from "antd";
 import Swal from "sweetalert2";
 import { BACKEND_URL_MAIN } from "../utils/util";
 import ApprovePaymentService from "../service/ApprovePaymentService";
@@ -17,6 +17,7 @@ function ApprovePayment() {
   const [AllPayment, setAllPayment] = useState("");
   const [OpenModalChkPayment, setOpenModalChkPayment] = useState(false);
   const [form] = Form.useForm();
+  const [form_search] = Form.useForm();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -172,29 +173,122 @@ function ApprovePayment() {
         text
       ),
   });
+
+  const Search = () => {
+    form_search.validateFields().then((v) => {
+      const data = Object.keys(v).reduce((acc, key) => {
+        acc[key] = v[key] !== undefined && v[key] !== null ? v[key] : '';
+        return acc;
+      }, {});
+      ApprovePaymentService
+        .getApprovePayment(data)
+        .then((res) => {
+          let { status, data } = res;
+        if (status === 200) {
+          setAllPayment(data);
+        }
+      })
+    });
+  };
+  const ClearSearch = () => {
+    form_search.resetFields();
+    Search();
+  };
+
+  const FormSearch = (
+    <Collapse
+      size="small"
+      // onChange={(e) => {
+      //   setActiveSearch(e);
+      // }}
+      bordered={true}
+      // activeKey={activeSearch}
+      items={[
+        {
+          key: "1",
+          label: <><SearchOutlined /><span> <b>ค้นหา</b> </span></>,  
+          children: (
+            <>
+              <Form form={form_search} layout="vertical" autoComplete="off">
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="ชื่อ-นามสกุลผู้ติดต่อ"
+                      name="nameSearch"
+                    >
+                       <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="เบอร์โทรศัพท์"
+                      name="telSearch"
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={6} md={6} lg={6} xl={6}>
+                    <Form.Item
+                      label="จำนวนเงิน"
+                      name="moneySearch"
+                    >
+                      <InputNumber style={{ height: 40 }}/>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={8} md={12} lg={12} xl={12}>
+                    {/* Ignore */}
+                  </Col>
+                </Row>
+                <Row gutter={[8, 8]}>
+                  <Col xs={24} sm={8} md={12} lg={12} xl={12}>
+                    <div justify="flex-end" gap={8}>
+                      <Button
+                      style={{ cursor: "pointer" }}
+                      type="primary"
+                      onClick={(e) => Search()}
+                      >
+                      ค้นหา
+                      </Button>
+                      {' '}
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => ClearSearch()}
+                      >
+                        ล้าง
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </>
+          ),
+          showArrow: true,
+        },
+      ]}
+    />
+  );
   const columns = [
     {
       title: "ชื่อ-นามสกุลผู้ติดต่อ",
       dataIndex: "contact_name",
       key: "contact_name",
       ...getColumnSearchProps("contact_name"),
-      sorter: (a, b) => a.contact_name.length - b.contact_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
         title: "เบอร์โทรศัพท์ ",
         dataIndex: "tel",
         key: "tel",
         ...getColumnSearchProps("tel"),
-        sorter: (a, b) => a.tel.length - b.tel.length,
-        sortDirections: ["descend", "ascend"],
     },
     {
         title: "เลขใบสั่งซื้อ ",
         dataIndex: "so_no",
         key: "so_no",
         ...getColumnSearchProps("so_no"),
-        sorter: (a, b) => a.so_no.length - b.so_no.length,
+        sorter: (a, b) => a.so_no.localeCompare(b.so_no),
         sortDirections: ["descend", "ascend"],
     },
     {
@@ -202,7 +296,11 @@ function ApprovePayment() {
         dataIndex: "price",
         key: "price",
         ...getColumnSearchProps("price"),
-        sorter: (a, b) => a.price.length - b.price.length,
+        sorter: (a, b) => {
+          const intA = parseInt(a.price.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10); 
+          const intB = parseInt(b.price.match(/-?\d{1,3}(?:,\d{3})*/)[0].replace(/,/g, ''), 10);
+          return intA - intB;
+        },
         sortDirections: ["descend", "ascend"],
     },
     {
@@ -210,7 +308,19 @@ function ApprovePayment() {
         dataIndex: "date_time",
         key: "date_time",
         ...getColumnSearchProps("date_time"),
-        sorter: (a, b) => a.date_time.length - b.date_time.length,
+        sorter: (a, b) => {
+          const [datePartA, timePartA] = a.date_time.split(' ');
+          const [dayA, monthA, yearA] = datePartA.split('-');
+          const formattedDateStringA = `${yearA}${monthA}${dayA}${timePartA.replace(/:/g, '')}`;
+          const dateA = parseInt(formattedDateStringA, 10);
+      
+          const [datePartB, timePartB] = b.date_time.split(' ');
+          const [dayB, monthB, yearB] = datePartB.split('-');
+          const formattedDateStringB = `${yearB}${monthB}${dayB}${timePartB.replace(/:/g, '')}`;
+          const dateB = parseInt(formattedDateStringB, 10);
+
+          return dateA - dateB;
+        },
         sortDirections: ["descend", "ascend"],
     },
     {
@@ -218,8 +328,6 @@ function ApprovePayment() {
       dataIndex: "status",
       key: "status",
       ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.status.length - b.status.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => {
         if(data === "อนุมัติการชำระเงิน"){ return <Badge status="success" text="อนุมัติการชำระเงิน" />}
         if(data === "รอตรวจสอบ"){ return <Badge color="yellow" text="รอตรวจสอบ" />}  
@@ -557,6 +665,10 @@ function ApprovePayment() {
           src={previewImage}
         />
       </Modal>      
+        <Form form={form} layout="vertical" autoComplete="off" >
+            {FormSearch}
+        </Form> 
+        <br></br>
       <div className="layout-content">
         <Row gutter={[24, 0]} style={{ marginTop: "1rem" }}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">

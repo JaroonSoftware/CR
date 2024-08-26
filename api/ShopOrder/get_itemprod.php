@@ -11,8 +11,20 @@ $dataArray = array();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 	$dataArray[] = $row;
 }
-$sql2 = "SELECT s.size_id as value,s.size_name as label  from size s LEFT JOIN product_size p on s.size_id = p.size_id Inner join stock st on s.size_id = st.size_id";
-$sql2 .= " where p.status = 'Y' and p.prod_id = '" . $_GET['id'] . "'  GROUP by p.size_id,p.prod_id;";
+$sql2 = "SELECT 
+    s.size_id AS value,
+    s.size_name AS label,
+    p.price 
+FROM 
+    size s 
+LEFT JOIN 
+    product_size p ON s.size_id = p.size_id AND p.prod_id = ".$_GET['id']." AND p.status = 'Y'
+INNER JOIN 
+    stock st ON s.size_id = st.size_id
+WHERE 
+    p.prod_id IS NOT NULL
+GROUP BY 
+    s.size_id, s.size_name, p.price;";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->execute();
 $dataSize = array();

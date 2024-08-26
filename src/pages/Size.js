@@ -160,8 +160,6 @@ function Size() {
       key: "size_name",
       width: "55%",
       ...getColumnSearchProps("size_name"),
-      sorter: (a, b) => a.size_name.length - b.size_name.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "สถานะการใช้งาน",
@@ -169,8 +167,6 @@ function Size() {
       key: "status",
       width: "30%",
       ...getColumnSearchProps("statussize"),
-      sorter: (a, b) => a.status.length - b.status.length,
-      sortDirections: ["descend", "ascend"],
       render: (data) => (
         <div>
           {data === "Y" ? (
@@ -188,9 +184,10 @@ function Size() {
       fixed: "right",
       render: (text) => (
         <Button
-          icon={<ToolTwoTone twoToneColor="#E74C3C" />}
+          icon={<ToolTwoTone/>}
           style={{ cursor: "pointer" }}
-          danger
+          type="primary"
+          ghost
           onClick={(e) => showEditModal(text.size_id)}
         >
           แก้ไข

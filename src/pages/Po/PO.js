@@ -735,7 +735,7 @@ const PO = () => {
       width: "20%",
       
       ...getColumnSearchProps("po_code"),
-      sorter: (a, b) => a.po_code.length - b.po_code.length,
+      sorter: (a, b) => a.po_code.localeCompare(b.po_code),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -744,7 +744,11 @@ const PO = () => {
         key: "po_date",
         width: "25%",
         ...getColumnSearchProps("po_date"),
-        sorter: (a, b) => a.po_date.length - b.po_date.length,
+        sorter: (a, b) => {
+          const dateA = new Date(a.po_date.split('-').reverse().join('-')); // แปลงจาก "DD-MM-YYYY" เป็น "YYYY-MM-DD"
+          const dateB = new Date(b.po_date.split('-').reverse().join('-'));
+          return dateA - dateB; // เปรียบเทียบ Date object
+        },
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -753,8 +757,6 @@ const PO = () => {
         key: "supname",
         width: "25%",
         ...getColumnSearchProps("supname"),
-        sorter: (a, b) => a.supname.length - b.supname.length,
-        sortDirections: ["descend", "ascend"],
       },
       {
         title: "สถานะ",
@@ -762,8 +764,6 @@ const PO = () => {
         key: "status",
         width: "20%",
         ...getColumnSearchProps("status"),
-        sorter: (a, b) => a.status.length - b.status.length,
-        sortDirections: ["descend", "ascend"],
         render: (data) => {
           if(data === "รับครบแล้ว"){ return <Badge status="success" text="รับครบแล้ว" />}
           if(data === "รอรับของ"){ return <Badge color="yellow" text="รอรับของ" />}  

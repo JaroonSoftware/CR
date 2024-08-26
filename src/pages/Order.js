@@ -309,7 +309,7 @@ function Order() {
         className: 'hidden-column',
     },
     {
-      title: 'ราคา',
+      title: 'ราคา (ต่อชิ้น)',
       dataIndex: 'price',
       key: 'price',
     },
@@ -344,7 +344,12 @@ function Order() {
       }}
     >
     <Card
-        title="ยืนยันการสั่งซื้อ"
+        title={
+          <span>
+            ยืนยันการสั่งซื้อ
+            <span style={{ color: 'red' }}> (กรุณาแจ้งการชำระเงินภายใน 24 ชม.)</span>
+          </span>
+        }
         bordered={false}
         style={{ color: "red", textAlign: "left" }}
     >
@@ -356,6 +361,11 @@ function Order() {
             modifier: "public",
           }}
         >
+          <p>
+            <Divider orientation="left" style={{ marginTop: 0 }}>
+              รายละเอียดการสั่งซื้อ
+            </Divider> 
+          </p>
           <Row gutter={[24, 0]}>
             {/* <Col xs={24} sm={24} md={6} lg={6} xl={6}>
               เลขใบสั่งซื้อ
@@ -366,7 +376,7 @@ function Order() {
               </Form.Item>
             </Col> */}
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-              ชื่อ-นามสกุล <span style={{ color: 'red' }}>*</span>
+              ชื่อ-นามสกุลผู้สั่งซื้อ <span style={{ color: 'red' }}>*</span>
               <Form.Item
                 name="cus_name"
                 rules={[
@@ -471,6 +481,25 @@ function Order() {
                 <Input placeholder="เบอร์โทรศัพท์" />
               </Form.Item>
             </Col>
+            <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+              ช่องทางการจัดส่ง <span style={{ color: 'red' }}>*</span>
+              <Form.Item
+                name="delivery_channel"
+              >
+                <Select placeholder="เลือกช่องทางการจัดส่ง" style={{ height: 40 }}>
+                  <Select.Option value="store">รับที่ร้าน</Select.Option>
+                  <Select.Option value="school">รับที่โรงเรียน</Select.Option>
+                  <Select.Option value="post">ส่งไปรษณีย์</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>      
+          </Row>
+          <p>
+            <Divider orientation="left" style={{ marginTop: 0 }}>
+              รายละเอียดสั่งปัก
+            </Divider> 
+          </p>
+          <Row gutter={[24, 0]}>
             <Col xs={24} sm={24} md={6} lg={6} xl={6}>
               คำนำหน้าชื่อที่จะปัก <span style={{ color: 'red' }}>*</span>
               <Form.Item name="embroider_prefix">

@@ -20,7 +20,7 @@ import {
   Modal,
 } from "antd";
 const PublicHeader = () => {
-  const [isModalloginOpen, setIsModalloginOpen] = useState(true); //fix isModalloginOpen = true เพื่อเทสหลังบ้าน
+  const [isModalloginOpen, setIsModalloginOpen] = useState(false); //fix isModalloginOpen = true เพื่อเทสหลังบ้าน
   const [AllProductEcommerce, setAllProductEcommerce] = useState([]);
   const [curr, setCurr] = useState(false);
   const authService = Authenticate();
@@ -100,7 +100,7 @@ const PublicHeader = () => {
     //   else direcetSystem();
     // }
      let curLocation = authService.getCurrent();
-
+     setIsModalloginOpen(true);
     setCurr(curLocation);
     // isLogin();
   }, []);
@@ -175,7 +175,7 @@ const PublicHeader = () => {
       >
         <Modal
           onOk={handleloginOk}
-          onCancel={handleloginCancel} //fix สำหรับเทสหลังบ้าน
+          //onCancel={handleloginCancel} //fix สำหรับเทสหลังบ้าน
           closable={false} //fix สำหรับเทสหลังบ้าน
           cancelButtonProps={{ style: { display: "none" } }} 
           okButtonProps={{ style: { display: "none" } }}
